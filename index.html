@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Automation Practice – Vinay</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- jQuery + jQuery UI -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+
+  <style>
+    body {
+      background: #f4f6f9;
+      font-family: "Segoe UI", Arial, sans-serif;
+    }
+    .container {
+      max-width: 1100px;
+    }
+    .card {
+      margin-bottom: 25px;
+      border-radius: 12px;
+    }
+    .card-header {
+      font-weight: 600;
+      font-size: 18px;
+    }
+    table th {
+      background: #f1f1f1;
+    }
+  </style>
+</head>
+
+<body>
+<div class="container my-4">
+
+  <h1 class="text-center mb-2">Automation Testing Practice</h1>
+  <p class="text-center text-muted mb-4">
+    For Selenium, Playwright & Cypress Training
+  </p>
+
+  <!-- ================= FORM ================= -->
+  <div class="card">
+    <div class="card-header">Form Elements</div>
+    <div class="card-body">
+
+      <div class="mb-3">
+        <label>Name</label>
+        <input id="name" class="form-control" placeholder="Enter Name">
+      </div>
+
+      <div class="mb-3">
+        <label>Email</label>
+        <input id="email" class="form-control" placeholder="Enter Email">
+      </div>
+
+      <div class="mb-3">
+        <label>Phone</label>
+        <input id="phone" class="form-control" placeholder="Enter Phone">
+      </div>
+
+      <div class="mb-3">
+        <label>Address</label>
+        <textarea id="address" class="form-control"></textarea>
+      </div>
+
+      <label class="mb-2">Gender</label><br>
+      <input type="radio" id="male" name="gender"> Male
+      <input type="radio" id="female" name="gender" class="ms-3"> Female
+    </div>
+  </div>
+
+  <!-- ================= CHECKBOXES ================= -->
+  <div class="card">
+    <div class="card-header">Days</div>
+    <div class="card-body">
+      <input type="checkbox" id="sunday"> Sunday
+      <input type="checkbox" id="monday" class="ms-3"> Monday
+      <input type="checkbox" id="tuesday" class="ms-3"> Tuesday
+      <input type="checkbox" id="wednesday" class="ms-3"> Wednesday
+      <input type="checkbox" id="thursday" class="ms-3"> Thursday
+      <input type="checkbox" id="friday" class="ms-3"> Friday
+      <input type="checkbox" id="saturday" class="ms-3"> Saturday
+    </div>
+  </div>
+
+  <!-- ================= DROPDOWNS ================= -->
+  <div class="card">
+    <div class="card-header">Dropdowns</div>
+    <div class="card-body">
+
+      <label>Country</label>
+      <select id="country" class="form-select mb-3">
+        <option>India</option>
+        <option>USA</option>
+        <option>UK</option>
+        <option>Germany</option>
+        <option>France</option>
+      </select>
+
+      <label>Colors (Multi-select)</label>
+      <select id="colors" class="form-select" multiple>
+        <option>Red</option>
+        <option>Blue</option>
+        <option>Green</option>
+        <option>Yellow</option>
+        <option>White</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- ================= DATE PICKERS ================= -->
+  <div class="card">
+    <div class="card-header">Date Pickers</div>
+    <div class="card-body">
+      <p>Date Picker 1: <input id="datepicker1"></p>
+      <p>Date Picker 2: <input id="datepicker2" readonly></p>
+
+      <label>Date Range</label><br>
+      <input type="date" id="startDate">
+      <input type="date" id="endDate">
+      <button id="rangeBtn" class="btn btn-secondary btn-sm ms-2">Submit</button>
+      <p id="rangeResult" class="mt-2"></p>
+    </div>
+  </div>
+
+  <!-- ================= FILE UPLOAD ================= -->
+  <div class="card">
+    <div class="card-header">File Upload</div>
+    <div class="card-body">
+      <input type="file" id="singleFile"><br><br>
+      <input type="file" id="multipleFiles" multiple>
+    </div>
+  </div>
+
+  <!-- ================= STATIC TABLE ================= -->
+  <div class="card">
+    <div class="card-header">Static Web Table</div>
+    <div class="card-body">
+      <table class="table table-bordered" id="bookTable">
+        <tr>
+          <th>Book</th><th>Author</th><th>Subject</th><th>Price</th>
+        </tr>
+        <tr><td>Learn Selenium</td><td>Amit</td><td>Selenium</td><td>300</td></tr>
+        <tr><td>Learn Java</td><td>Mukesh</td><td>Java</td><td>500</td></tr>
+        <tr><td>Learn JS</td><td>Animesh</td><td>JavaScript</td><td>300</td></tr>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  $("#datepicker1").datepicker();
+  $("#datepicker2").datepicker({ dateFormat: "dd/mm/yy" });
+
+  $("#rangeBtn").click(function () {
+    let s = $("#startDate").val();
+    let e = $("#endDate").val();
+    if (!s || !e) {
+      $("#rangeResult").text("Select both dates");
+      return;
+    }
+    let diff = (new Date(e) - new Date(s)) / (1000 * 60 * 60 * 24);
+    $("#rangeResult").text("Selected range: " + diff + " days");
+  });
+</script>
+
+</body>
+</html>
