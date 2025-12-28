@@ -2,173 +2,552 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Automation Practice – Vinay</title>
+  <title>Automation Testing Practice</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <!-- Bootstrap -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- ===== Extracted & normalized from your DOM ===== -->
 
-  <!-- jQuery + jQuery UI -->
+  <!-- jQuery (as used in original DOM) -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 
+  <!-- jQuery UI (for date pickers – original dependency) -->
+  <link rel="stylesheet"
+        href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
+  <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+
+  <!-- ===== Cleaned global styles (from DOM, Blogger wrappers removed) ===== -->
   <style>
     body {
-      background: #f4f6f9;
-      font-family: "Segoe UI", Arial, sans-serif;
+      background: #e5e5e5;
+      font-family: Arial, Helvetica, sans-serif;
+      margin: 0;
+      padding: 0;
     }
-    .container {
-      max-width: 1100px;
+
+    h1 {
+      color: #b51200;
+      text-align: center;
+      margin: 15px 0 5px 0;
+      font-size: 32px;
+      font-weight: bold;
     }
-    .card {
-      margin-bottom: 25px;
-      border-radius: 12px;
-    }
-    .card-header {
-      font-weight: 600;
+
+    .subtitle {
+      text-align: center;
       font-size: 18px;
+      color: #333;
+      margin-bottom: 20px;
     }
-    table th {
-      background: #f1f1f1;
+
+    /* ===== Main layout (matches Blogger visual structure) ===== */
+    .page-container {
+      width: 1200px;
+      margin: auto;
+    }
+
+    .content-wrapper {
+      display: flex;
+      gap: 20px;
+    }
+
+    .left-column {
+      width: 65%;
+      background: #ffffff;
+      padding: 15px;
+    }
+
+    .right-column {
+      width: 35%;
+      background: #ffffff;
+      padding: 15px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: bold;
+      border-bottom: 2px solid #ccc;
+      margin-bottom: 15px;
+      padding-bottom: 5px;
     }
   </style>
 </head>
 
 <body>
-<div class="container my-4">
 
-  <h1 class="text-center mb-2">Automation Testing Practice</h1>
-  <p class="text-center text-muted mb-4">
-    For Selenium, Playwright & Cypress Training
-  </p>
+  <!-- ===== PAGE HEADER (from DOM) ===== -->
+  <h1>Automation Testing Practice</h1>
+  <div class="subtitle">For Selenium, Cypress &amp; Playwright</div>
 
-  <!-- ================= FORM ================= -->
-  <div class="card">
-    <div class="card-header">Form Elements</div>
-    <div class="card-body">
+  <!-- ===== PAGE CONTAINER ===== -->
+  <div class="page-container">
 
-      <div class="mb-3">
-        <label>Name</label>
-        <input id="name" class="form-control" placeholder="Enter Name">
-      </div>
+    <!-- ===== TWO COLUMN LAYOUT ===== -->
+    <div class="content-wrapper">
 
-      <div class="mb-3">
-        <label>Email</label>
-        <input id="email" class="form-control" placeholder="Enter Email">
-      </div>
+      <!-- ================= LEFT COLUMN ================= -->
+      <div class="left-column">
 
-      <div class="mb-3">
-        <label>Phone</label>
-        <input id="phone" class="form-control" placeholder="Enter Phone">
-      </div>
+        <!-- Content will be injected here in PART 2 -->
+        <!-- ================= GUI ELEMENTS ================= -->
+        <div class="section">
+          <div class="section-title">GUI Elements</div>
 
-      <div class="mb-3">
-        <label>Address</label>
-        <textarea id="address" class="form-control"></textarea>
-      </div>
+          <label>Name:</label>
+          <input id="name" type="text" maxlength="15"><br><br>
 
-      <label class="mb-2">Gender</label><br>
-      <input type="radio" id="male" name="gender"> Male
-      <input type="radio" id="female" name="gender" class="ms-3"> Female
-    </div>
-  </div>
+          <label>Email:</label>
+          <input id="email" type="text" maxlength="25"><br><br>
 
-  <!-- ================= CHECKBOXES ================= -->
-  <div class="card">
-    <div class="card-header">Days</div>
-    <div class="card-body">
-      <input type="checkbox" id="sunday"> Sunday
-      <input type="checkbox" id="monday" class="ms-3"> Monday
-      <input type="checkbox" id="tuesday" class="ms-3"> Tuesday
-      <input type="checkbox" id="wednesday" class="ms-3"> Wednesday
-      <input type="checkbox" id="thursday" class="ms-3"> Thursday
-      <input type="checkbox" id="friday" class="ms-3"> Friday
-      <input type="checkbox" id="saturday" class="ms-3"> Saturday
-    </div>
-  </div>
+          <label>Phone:</label>
+          <input id="phone" type="text" maxlength="10"><br><br>
 
-  <!-- ================= DROPDOWNS ================= -->
-  <div class="card">
-    <div class="card-header">Dropdowns</div>
-    <div class="card-body">
+          <label>Address:</label><br>
+          <textarea id="textarea"></textarea><br><br>
 
-      <label>Country</label>
-      <select id="country" class="form-select mb-3">
-        <option>India</option>
-        <option>USA</option>
-        <option>UK</option>
-        <option>Germany</option>
-        <option>France</option>
-      </select>
+          <label>Gender:</label><br>
+          <input type="radio" id="male" name="gender" value="male"> Male
+          <input type="radio" id="female" name="gender" value="female"> Female
+        </div>
 
-      <label>Colors (Multi-select)</label>
-      <select id="colors" class="form-select" multiple>
-        <option>Red</option>
-        <option>Blue</option>
-        <option>Green</option>
-        <option>Yellow</option>
-        <option>White</option>
-      </select>
-    </div>
-  </div>
+        <br>
 
-  <!-- ================= DATE PICKERS ================= -->
-  <div class="card">
-    <div class="card-header">Date Pickers</div>
-    <div class="card-body">
-      <p>Date Picker 1: <input id="datepicker1"></p>
-      <p>Date Picker 2: <input id="datepicker2" readonly></p>
+        <!-- ================= DAYS ================= -->
+        <div class="section">
+          <div class="section-title">Days</div>
+          <input type="checkbox" id="sunday" value="sunday"> Sunday
+          <input type="checkbox" id="monday" value="monday"> Monday
+          <input type="checkbox" id="tuesday" value="tuesday"> Tuesday
+          <input type="checkbox" id="wednesday" value="wednesday"> Wednesday
+          <input type="checkbox" id="thursday" value="thursday"> Thursday
+          <input type="checkbox" id="friday" value="friday"> Friday
+          <input type="checkbox" id="saturday" value="saturday"> Saturday
+        </div>
 
-      <label>Date Range</label><br>
-      <input type="date" id="startDate">
-      <input type="date" id="endDate">
-      <button id="rangeBtn" class="btn btn-secondary btn-sm ms-2">Submit</button>
-      <p id="rangeResult" class="mt-2"></p>
-    </div>
-  </div>
+        <br>
 
-  <!-- ================= FILE UPLOAD ================= -->
-  <div class="card">
-    <div class="card-header">File Upload</div>
-    <div class="card-body">
-      <input type="file" id="singleFile"><br><br>
-      <input type="file" id="multipleFiles" multiple>
-    </div>
-  </div>
+        <!-- ================= DROPDOWNS ================= -->
+        <div class="section">
+          <div class="section-title">Dropdowns</div>
 
-  <!-- ================= STATIC TABLE ================= -->
-  <div class="card">
-    <div class="card-header">Static Web Table</div>
-    <div class="card-body">
-      <table class="table table-bordered" id="bookTable">
-        <tr>
-          <th>Book</th><th>Author</th><th>Subject</th><th>Price</th>
-        </tr>
-        <tr><td>Learn Selenium</td><td>Amit</td><td>Selenium</td><td>300</td></tr>
-        <tr><td>Learn Java</td><td>Mukesh</td><td>Java</td><td>500</td></tr>
-        <tr><td>Learn JS</td><td>Animesh</td><td>JavaScript</td><td>300</td></tr>
-      </table>
-    </div>
-  </div>
+          <label>Country:</label><br>
+          <select id="country">
+            <option>United States</option>
+            <option>Canada</option>
+            <option>United Kingdom</option>
+            <option>Germany</option>
+            <option>France</option>
+            <option>Australia</option>
+            <option>Japan</option>
+            <option>China</option>
+            <option>Brazil</option>
+            <option>India</option>
+          </select>
 
-</div>
+          <br><br>
 
-<script>
-  $("#datepicker1").datepicker();
-  $("#datepicker2").datepicker({ dateFormat: "dd/mm/yy" });
+          <label>Colors:</label><br>
+          <select id="colors" multiple>
+            <option>Red</option>
+            <option>Blue</option>
+            <option>Green</option>
+            <option>Yellow</option>
+            <option>White</option>
+          </select>
 
-  $("#rangeBtn").click(function () {
-    let s = $("#startDate").val();
-    let e = $("#endDate").val();
-    if (!s || !e) {
-      $("#rangeResult").text("Select both dates");
-      return;
-    }
-    let diff = (new Date(e) - new Date(s)) / (1000 * 60 * 60 * 24);
-    $("#rangeResult").text("Selected range: " + diff + " days");
-  });
-</script>
+          <br><br>
+
+          <label>Sorted List:</label><br>
+          <select id="animals" name="animals" multiple>
+            <option>Cat</option>
+            <option>Cheetah</option>
+            <option>Deer</option>
+            <option>Dog</option>
+            <option>Elephant</option>
+            <option>Fox</option>
+            <option>Giraffe</option>
+            <option>Lion</option>
+            <option>Rabbit</option>
+            <option>Zebra</option>
+          </select>
+        </div>
+
+        <br>
+
+        <!-- ================= DATE PICKERS ================= -->
+        <div class="section">
+          <div class="section-title">Date Pickers</div>
+
+          Date Picker 1:
+          <input type="text" id="datepicker"><br><br>
+
+          Date Picker 2:
+          <input type="text" id="txtDate" readonly><br><br>
+
+          Date Picker 3 (Select a range):<br><br>
+          <input type="date" id="start-date">
+          <input type="date" id="end-date">
+          <button onclick="calculateRange()">Submit</button>
+
+          <p id="result"></p>
+        </div>
+
+        <br>
+
+        <!-- ================= FILE UPLOAD ================= -->
+        <div class="section">
+          <div class="section-title">Upload Files</div>
+
+          <form id="singleFileForm">
+            <input type="file" id="singleFileInput">
+            <button type="submit">Upload Single File</button>
+          </form>
+
+          <p id="singleFileStatus"></p>
+
+          <form id="multipleFilesForm">
+            <input type="file" id="multipleFilesInput" multiple>
+            <button type="submit">Upload Multiple Files</button>
+          </form>
+
+          <p id="multipleFilesStatus"></p>
+        </div>
+
+        <br>
+
+        <!-- ================= STATIC WEB TABLE ================= -->
+        <div class="section">
+          <div class="section-title">Static Web Table</div>
+
+          <table name="BookTable" border="1">
+            <tr>
+              <th>BookName</th>
+              <th>Author</th>
+              <th>Subject</th>
+              <th>Price</th>
+            </tr>
+            <tr><td>Learn Selenium</td><td>Amit</td><td>Selenium</td><td>300</td></tr>
+            <tr><td>Learn Java</td><td>Mukesh</td><td>Java</td><td>500</td></tr>
+            <tr><td>Learn JS</td><td>Animesh</td><td>Javascript</td><td>300</td></tr>
+            <tr><td>Master In Selenium</td><td>Mukesh</td><td>Selenium</td><td>3000</td></tr>
+            <tr><td>Master In Java</td><td>Amod</td><td>JAVA</td><td>2000</td></tr>
+            <tr><td>Master In JS</td><td>Amit</td><td>Javascript</td><td>1000</td></tr>
+          </table>
+        </div>
+
+        <br>
+
+        <!-- ================= DYNAMIC WEB TABLE ================= -->
+        <div class="section">
+          <div class="section-title">Dynamic Web Table</div>
+
+          <table id="taskTable" border="1">
+            <thead>
+              <tr id="headers"></tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+
+          <div id="displayValues"></div>
+        </div>
+
+        <!-- ===== ORIGINAL JS (from DOM) ===== -->
+        <script>
+          $(function () {
+            $("#datepicker").datepicker();
+            $("#txtDate").datepicker({
+              changeMonth: true,
+              changeYear: true,
+              dateFormat: 'dd/mm/yy'
+            });
+          });
+
+          function calculateRange() {
+            const start = document.getElementById("start-date").value;
+            const end = document.getElementById("end-date").value;
+            if (!start || !end) {
+              document.getElementById("result").innerText =
+                "Please select both start and end dates.";
+              return;
+            }
+            const diff =
+              (new Date(end) - new Date(start)) / (1000 * 60 * 60 * 24);
+            document.getElementById("result").innerText =
+              "You selected a range of " + diff + " days.";
+          }
+
+          document.getElementById("singleFileForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const f = document.getElementById("singleFileInput").files[0];
+            document.getElementById("singleFileStatus").innerText =
+              f ? f.name : "No file selected";
+          });
+
+          document.getElementById("multipleFilesForm").addEventListener("submit", function (e) {
+            e.preventDefault();
+            const files = document.getElementById("multipleFilesInput").files;
+            let out = "";
+            for (let i = 0; i < files.length; i++) {
+              out += files[i].name + "<br>";
+            }
+            document.getElementById("multipleFilesStatus").innerHTML =
+              out || "No files selected";
+          });
+
+          const processes = ["Chrome", "Firefox", "Internet Explorer", "System"];
+          const columns = ["CPU (%)", "Network (Mbps)", "Disk (MB/s)", "Memory (MB)"];
+
+          function rand(min, max) {
+            return (Math.random() * (max - min) + min).toFixed(1);
+          }
+
+          function buildTable() {
+            const h = document.getElementById("headers");
+            const r = document.getElementById("rows");
+            h.innerHTML = "<th>Name</th>";
+            columns.forEach(c => h.innerHTML += "<th>" + c + "</th>");
+            r.innerHTML = "";
+
+            processes.forEach(p => {
+              let row = "<tr><td>" + p + "</td>";
+              row += "<td>" + rand(0, 10) + "</td>";
+              row += "<td>" + rand(0, 10) + "</td>";
+              row += "<td>" + rand(0, 1) + "</td>";
+              row += "<td>" + rand(100, 500) + "</td></tr>";
+              r.innerHTML += row;
+            });
+          }
+          buildTable();
+        </script>
+      <!-- ================= RIGHT COLUMN ================= -->
+      <div class="right-column">
+
+        <!-- ===== Tabs Section (structure only – behavior not in DOM) ===== -->
+        <div class="section">
+          <div class="section-title">Tabs</div>
+
+          <input type="text" id="Wikipedia1_wikipedia-search-input" placeholder="Search Wikipedia">
+          <button id="Wikipedia1_wikipedia-search-button">Search</button>
+
+          <div id="Wikipedia1_wikipedia-search-results"></div>
+
+          <!-- NOTE:
+               Original Blogger JS for Wikipedia API search
+               was NOT present in the uploaded DOM.
+               Behavior intentionally not recreated.
+          -->
+        </div>
+
+        <br>
+
+        <!-- ===== Dynamic Button (structure only) ===== -->
+        <div class="section">
+          <div class="section-title">Dynamic Button</div>
+
+          <button id="startButton">START</button>
+
+          <!-- NOTE:
+               Original JS (START → PROCESSING → DONE)
+               not present in DOM. UI retained exactly.
+          -->
+        </div>
+
+        <br>
+
+        <!-- ===== Alerts & Popups (structure only) ===== -->
+        <div class="section">
+          <div class="section-title">Alerts & Popups</div>
+
+          <button id="alertBtn">Simple Alert</button><br><br>
+          <button id="confirmBtn">Confirmation Alert</button><br><br>
+          <button id="promptBtn">Prompt Alert</button>
+
+          <!-- NOTE:
+               Alert handlers not found in DOM.
+               No behavior assumed.
+          -->
+        </div>
+
+        <br>
+
+        <!-- ===== New Tab ===== -->
+        <div class="section">
+          <div class="section-title">New Tab</div>
+          <a href="#" id="newTabLink">Click Here</a>
+        </div>
+
+        <br>
+
+        <!-- ===== Popup Windows ===== -->
+        <div class="section">
+          <div class="section-title">Popup Windows</div>
+          <button id="popupBtn">Popup Window</button>
+        </div>
+
+        <br>
+
+        <!-- ===== Mouse Hover ===== -->
+        <div class="section">
+          <div class="section-title">Mouse Hover</div>
+
+          <div id="hoverContent">
+            <button>Hover Me</button>
+            <div id="hoverMenu">
+              <a href="#">Top</a><br>
+              <a href="#">Reload</a>
+            </div>
+          </div>
+
+          <!-- NOTE:
+               Hover behavior CSS/JS not in DOM.
+               Structure preserved only.
+          -->
+        </div>
+
+        <br>
+
+        <!-- ===== Double Click ===== -->
+        <div class="section">
+          <div class="section-title">Double Click</div>
+
+          <input type="text" id="field1" value="Hello World">
+          <input type="text" id="field2">
+          <button id="copyTextBtn">Copy Text</button>
+
+          <!-- NOTE:
+               ondblclick / copy logic not present in DOM.
+          -->
+        </div>
+
+        <br>
+
+        <!-- ===== Drag and Drop ===== -->
+        <div class="section">
+          <div class="section-title">Drag and Drop</div>
+
+          <div id="draggable">Drag Me</div>
+          <div id="droppable">Drop Here</div>
+
+          <!-- NOTE:
+               Drag/drop JS not found in DOM.
+          -->
+        </div>
+
+        <br>
+
+        <!-- ===== Slider ===== -->
+        <div class="section">
+          <div class="section-title">Slider</div>
+
+          <input type="range" id="slider" min="0" max="100">
+          <span id="sliderValue">0</span>
+
+          <!-- NOTE:
+               oninput behavior not found in DOM.
+          -->
+        </div>
+
+        <br>
+
+        <!-- ===== SVG Elements ===== -->
+        <div class="section">
+          <div class="section-title">SVG Elements</div>
+
+          <svg width="120" height="100">
+            <circle cx="50" cy="50" r="40" stroke="green" stroke-width="4" fill="yellow" />
+          </svg>
+        </div>
+
+        <br>
+
+        <!-- ===== Scrolling Dropdown ===== -->
+        <div class="section">
+          <div class="section-title">Scrolling Dropdown</div>
+
+          <select size="5">
+            <option>Item 1</option>
+            <option>Item 2</option>
+            <option>Item 3</option>
+            <option>Item 4</option>
+            <option>Item 5</option>
+            <option>Item 6</option>
+            <option>Item 7</option>
+          </select>
+        </div>
+
+        <br>
+
+        <!-- ===== Labels & Links ===== -->
+        <div class="section">
+          <div class="section-title">Labels and Links</div>
+
+          <label>Mobile Labels</label><br>
+          <a href="#">Samsung</a><br>
+          <a href="#">Realme</a><br><br>
+
+          <label>Laptop Links</label><br>
+          <a href="#">Apple</a><br>
+          <a href="#">Lenovo</a><br><br>
+
+          <label>Broken Links</label><br>
+          <a href="#">Broken Link 1</a><br>
+          <a href="#">Broken Link 2</a>
+        </div>
+
+        <br>
+
+        <!-- ===== Visitors ===== -->
+        <div class="section">
+          <div class="section-title">Visitors</div>
+
+          <p>Visitors Count</p>
+
+          <!-- NOTE:
+               Blogger visitor widget not available in DOM.
+          -->
+        </div>
+
+        <br>
+
+        <!-- ===== Shadow DOM ===== -->
+        <div class="section">
+          <div class="section-title">Shadow DOM</div>
+
+          <div id="shadowHost"></div>
+
+          <!-- NOTE:
+               No attachShadow() logic present in DOM.
+          -->
+        </div>
+
+        <br>
+
+        <!-- ===== Extra Sections ===== -->
+        <div class="section">
+          <div class="section-title">Section 1</div>
+          <input type="text">
+        </div>
+
+        <div class="section">
+          <div class="section-title">Section 2</div>
+          <input type="text">
+        </div>
+
+        <div class="section">
+          <div class="section-title">Section 3</div>
+          <input type="text">
+        </div>
+
+      </div> <!-- END RIGHT COLUMN -->
+
+    </div> <!-- END CONTENT WRAPPER -->
+  </div> <!-- END PAGE CONTAINER -->
+
+  <!-- ===== FOOTER ===== -->
+  <footer style="text-align:center; padding:15px; background:#f2f2f2; margin-top:20px;">
+    <a href="#">Home</a> |
+    <a href="#">Hidden Elements & AJAX</a> |
+    <a href="#">Download Files</a>
+  </footer>
 
 </body>
 </html>
