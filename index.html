@@ -11,6 +11,11 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
 <style>
+/* ===== RESET ===== */
+* {
+  box-sizing: border-box;
+}
+
 /* ===== BODY ===== */
 body {
   font-family: "Open Sans", sans-serif;
@@ -19,11 +24,13 @@ body {
   margin: 0;
 }
 
-/* ===== PAGE WIDTH ===== */
+/* ===== WRAPPER ===== */
 .wrapper {
   width: 1000px;
-  margin: auto;
-  background: #fff;
+  margin: 30px auto;
+  background: #ffffff;
+  position: relative;
+  z-index: 1;
 }
 
 /* ===== HEADER ===== */
@@ -40,10 +47,10 @@ body {
 
 /* ===== MENU ===== */
 .menu {
+  text-align: center;
   border-top: 1px solid #dedede;
   border-bottom: 1px solid #dedede;
   padding: 10px 0;
-  text-align: center;
 }
 
 .menu a {
@@ -51,15 +58,14 @@ body {
   font-size: 18px;
   color: #00299b;
   text-decoration: none;
-}
-
-.menu a:hover {
-  text-decoration: underline;
+  pointer-events: auto;
 }
 
 /* ===== CONTENT ===== */
 .content {
   padding: 25px;
+  position: relative;
+  z-index: 10; /* 🔑 THIS FIXES INPUTS */
 }
 
 .section {
@@ -76,33 +82,21 @@ label {
   font-weight: 600;
 }
 
-input[type=text],
+input,
 textarea,
 select {
   width: 280px;
   padding: 6px;
   margin-bottom: 10px;
   display: block;
+  position: relative;
+  z-index: 20; /* 🔑 CRITICAL */
 }
 
 input[type=checkbox],
 input[type=radio] {
-  margin-right: 5px;
-}
-
-/* ===== TABLE ===== */
-table {
-  width: 80%;
-  border-collapse: collapse;
-}
-
-table th {
-  background: #f4f4f4;
-}
-
-table, th, td {
-  border: 1px solid #ccc;
-  padding: 8px;
+  width: auto;
+  display: inline-block;
 }
 </style>
 </head>
@@ -111,93 +105,57 @@ table, th, td {
 
 <div class="wrapper">
 
-<div class="header">
-  <h1>Automation Testing Practice</h1>
-</div>
+  <div class="header">
+    <h1>Automation Testing Practice</h1>
+  </div>
 
-<div class="menu">
-  <a href="#gui">GUI Elements</a>
-  <a href="#static">Static Web Table</a>
-  <a href="#dynamic">Dynamic Web Table</a>
-  <a href="#date">Date Picker</a>
-  <a href="#upload">Upload Files</a>
-</div>
+  <div class="menu">
+    <a href="#gui">GUI Elements</a>
+    <a href="#date">Date Picker</a>
+    <a href="#table">Web Tables</a>
+  </div>
 
-<div class="content">
+  <div class="content">
 
-<!-- GUI -->
-<div class="section" id="gui">
-<h2>Form Elements</h2>
+    <!-- FORM -->
+    <div class="section" id="gui">
+      <h2>Form Elements</h2>
 
-<label>Name</label>
-<input type="text">
+      <label>Name</label>
+      <input type="text" id="name">
 
-<label>Email</label>
-<input type="text">
+      <label>Email</label>
+      <input type="text" id="email">
 
-<label>Phone</label>
-<input type="text">
+      <label>Phone</label>
+      <input type="text" id="phone">
 
-<label>Address</label>
-<textarea></textarea>
+      <label>Address</label>
+      <textarea id="address"></textarea>
 
-<label>Gender</label>
-<input type="radio" name="g"> Male
-<input type="radio" name="g"> Female
+      <label>Gender</label>
+      <input type="radio" name="gender"> Male
+      <input type="radio" name="gender"> Female
+    </div>
 
-<br><br>
-<label>Days</label><br>
-<input type="checkbox"> Sunday
-<input type="checkbox"> Monday
-<input type="checkbox"> Tuesday
-<input type="checkbox"> Wednesday
-<input type="checkbox"> Thursday
-<input type="checkbox"> Friday
-<input type="checkbox"> Saturday
+    <!-- DATE -->
+    <div class="section" id="date">
+      <h2>Date Picker</h2>
+      <input type="text" id="dp1">
+      <input type="text" id="dp2" readonly>
+    </div>
 
-<br><br>
-<label>Country</label>
-<select>
-  <option>India</option>
-  <option>USA</option>
-  <option>UK</option>
-</select>
-</div>
+    <!-- TABLE -->
+    <div class="section" id="table">
+      <h2>Static Web Table</h2>
+      <table border="1" cellpadding="8">
+        <tr><th>Book</th><th>Author</th><th>Price</th></tr>
+        <tr><td>Selenium</td><td>Amit</td><td>300</td></tr>
+        <tr><td>Java</td><td>Mukesh</td><td>500</td></tr>
+      </table>
+    </div>
 
-<!-- DATE -->
-<div class="section" id="date">
-<h2>Date Picker</h2>
-<input type="text" id="dp1">
-<input type="text" id="dp2" readonly>
-</div>
-
-<!-- STATIC TABLE -->
-<div class="section" id="static">
-<h2>Static Web Table</h2>
-<table>
-<tr><th>Book</th><th>Author</th><th>Price</th></tr>
-<tr><td>Selenium</td><td>Amit</td><td>300</td></tr>
-<tr><td>Java</td><td>Mukesh</td><td>500</td></tr>
-</table>
-</div>
-
-<!-- DYNAMIC TABLE -->
-<div class="section" id="dynamic">
-<h2>Dynamic Web Table</h2>
-<table>
-<tr><th>Name</th><th>CPU</th><th>Memory</th></tr>
-<tr><td>Chrome</td><td>2.6%</td><td>36MB</td></tr>
-<tr><td>Firefox</td><td>1.1%</td><td>67MB</td></tr>
-</table>
-</div>
-
-<!-- UPLOAD -->
-<div class="section" id="upload">
-<h2>Upload Files</h2>
-<input type="file">
-</div>
-
-</div>
+  </div>
 </div>
 
 <script>
