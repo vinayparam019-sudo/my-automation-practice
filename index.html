@@ -1,255 +1,821 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Automation Testing Practice</title>
-<meta name="viewport" content="width=1100">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Automation Testing Practice</title>
+  <style>
+    /* Global Reset */
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
 
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+    /* Base Typography & Layout to resemble Blogger Simple theme */
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: #333;
+      background: #f5f5f5;
+      line-height: 1.5;
+    }
+    a { color: #1a73e8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
-<!-- jQuery (ONLY ONCE) -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      background: #fff;
+      box-shadow: 0 0 10px rgba(0,0,0,0.08);
+    }
+    header {
+      background: #ffffff;
+      border-bottom: 1px solid #e0e0e0;
+      padding: 24px 24px 16px;
+    }
+    header h1 {
+      margin: 0 0 8px 0;
+      font-size: 28px;
+      color: #111;
+      font-weight: 700;
+    }
+    header p.subtitle { margin: 0; color: #666; }
 
-<!-- jQuery UI -->
-<link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-<script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
+    /* Top Nav resembling Blogger pages list */
+    .top-nav {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+    .top-nav a {
+      padding: 6px 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background: #fafafa;
+    }
 
-<style>
-* { box-sizing: border-box; }
+    /* Section styling */
+    section {
+      padding: 18px 24px;
+      border-bottom: 1px solid #eee;
+    }
+    section h2 {
+      margin: 0 0 14px 0;
+      font-size: 22px;
+      color: #222;
+      font-weight: 700;
+    }
+    section h3 {
+      margin: 12px 0;
+      font-size: 18px;
+      color: #222;
+      font-weight: 600;
+    }
 
-body {
-  font-family: "Open Sans", sans-serif;
-  background: #e9edec;
-  margin: 0;
-}
+    /* Forms */
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 10px 16px;
+      align-items: center;
+      max-width: 700px;
+    }
+    label { font-weight: 600; }
+    input[type="text"], input[type="email"], input[type="file"], select, textarea {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      font-size: 14px;
+      width: 100%;
+      background: #fff;
+    }
+    textarea { resize: vertical; min-height: 80px; }
+    .inline-group { display: flex; gap: 12px; align-items: center; }
 
-.wrapper {
-  width: 1000px;
-  margin: 30px auto;
-  background: #fff;
-  padding: 25px;
-}
+    .actions { margin-top: 12px; }
+    button, .btn {
+      display: inline-block;
+      padding: 8px 14px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #fafafa;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover, .btn:hover { background: #f0f0f0; }
 
-h1 {
-  text-align: center;
-  color: #b51200;
-}
+    /* Datepicker popover */
+    .datepicker-pop {
+      position: absolute;
+      z-index: 1000;
+      background: #fff;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      padding: 8px;
+      width: 260px;
+    }
+    .datepicker-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    .datepicker-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+    .datepicker-cell { text-align: center; padding: 6px; border-radius: 4px; cursor: pointer; }
+    .datepicker-cell:hover { background: #eee; }
+    .datepicker-dow { font-weight: 700; color: #555; }
+    .datepicker-nav { display: flex; gap: 8px; }
 
-.menu {
-  text-align: center;
-  border-top: 1px solid #dedede;
-  border-bottom: 1px solid #dedede;
-  padding: 10px 0;
-  margin-bottom: 30px;
-}
+    /* Tables */
+    table { border-collapse: collapse; width: 100%; }
+    th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+    th { background: #fafafa; font-weight: 700; }
 
-.menu a {
-  margin: 0 12px;
-  font-size: 18px;
-  color: #00299b;
-  text-decoration: none;
-}
+    /* Pagination */
+    .pagination { display: flex; gap: 8px; margin-top: 10px; }
+    .pagination .page { padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; }
+    .pagination .page.active { background: #e0e0e0; }
 
-.section {
-  margin-bottom: 40px;
-}
+    /* Mouse Hover dropdown */
+    .hover-wrapper { position: relative; display: inline-block; }
+    .hover-menu { position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid #ccc; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.12); display: none; min-width: 160px; }
+    .hover-wrapper:hover .hover-menu { display: block; }
+    .hover-menu a { display: block; padding: 8px 12px; }
 
-label {
-  font-weight: 600;
-  display: block;
-  margin-top: 10px;
-}
+    /* Double click */
+    .dc-grid { display: grid; grid-template-columns: 1fr 1fr auto; gap: 12px; max-width: 640px; align-items: center; }
 
-input,
-textarea,
-select {
-  width: 300px;
-  padding: 7px;
-  margin-top: 5px;
-  pointer-events: auto;
-}
+    /* Drag & Drop */
+    .drag-area { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; max-width: 600px; }
+    .draggable { padding: 12px; background: #e8f0fe; border: 1px solid #90caf9; border-radius: 6px; cursor: grab; text-align: center; }
+    .droppable { padding: 24px; background: #fff3e0; border: 2px dashed #ffb74d; border-radius: 6px; text-align: center; }
+    .droppable.success { background: #e8f5e9; border-color: #81c784; }
 
-input[type=checkbox],
-input[type=radio] {
-  width: auto;
-}
+    /* Slider */
+    .slider-wrap { max-width: 500px; display: flex; gap: 12px; align-items: center; }
+    input[type="range"] { width: 100%; }
 
-table {
-  width: 80%;
-  border-collapse: collapse;
-}
+    /* SVGs */
+    .svg-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+    .svg-item { width: 120px; height: 80px; border: 1px solid #ccc; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
 
-table, th, td {
-  border: 1px solid #ccc;
-  padding: 8px;
-}
+    /* Keyboard control */
+    .kb-area { position: relative; width: 340px; height: 180px; border: 1px solid #ccc; border-radius: 6px; background: #fafafa; }
+    .kb-box { position: absolute; width: 40px; height: 40px; background: #c8e6c9; border: 1px solid #81c784; border-radius: 6px; left: 12px; top: 12px; }
 
-th {
-  background: #f4f4f4;
-}
+    /* Labels and Links */
+    .label-links { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; }
 
-.error {
-  color: red;
-  font-size: 14px;
-}
-</style>
+    /* Footer */
+    footer { padding: 16px 24px; color: #666; background: #fafafa; border-top: 1px solid #e0e0e0; }
+    footer a { color: #666; }
+
+    /* Helper */
+    .help { color: #777; font-size: 13px; }
+    .note { color: #444; font-size: 14px; }
+    .hidden { display: none !important; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); border: 0; }
+  </style>
 </head>
-
 <body>
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1>Automation Testing Practice</h1>
+      <p class="subtitle">For Selenium, Cypress &amp; Playwright</p>
+      <nav class="top-nav" aria-label="Primary">
+        <a href="https://www.qsgsoft.com/" aria-label="Home">Home</a>
+        <a href="https://www.qsgsoft.com/" aria-label="Udemy Courses">Udemy Courses</a>
+        <a href="https://www.qsgsoft.com/" aria-label="Online Trainings">Online Trainings</a>
+        <a href="https://www.qsgsoft.com/" aria-label="Blog">Blog</a>
+        <a href="https://www.qsgsoft.com/" aria-label="Playwright Practice">PlaywrightPractice</a>
+      </nav>
+    </header>
 
-<div class="wrapper">
+    <!-- GUI Elements / Main Form -->
+    <section aria-labelledby="gui-title">
+      <h2 id="gui-title">GUI Elements</h2>
+      <div class="form-grid" id="main-form" role="form" aria-label="Automation Form">
+        <label for="name">Name:</label>
+        <input id="name" name="name" type="text" aria-required="true" placeholder="Enter your name" />
 
-<h1>Automation Testing Practice</h1>
+        <label for="email">Email:</label>
+        <input id="email" name="email" type="email" placeholder="name@example.com" />
 
-<div class="menu">
-  <a href="#form">GUI Elements</a>
-  <a href="#date">Date Picker</a>
-  <a href="#static">Static Table</a>
-  <a href="#dynamic">Dynamic Table</a>
-  <a href="#upload">Upload</a>
-</div>
+        <label for="phone">Phone:</label>
+        <input id="phone" name="phone" type="text" placeholder="Optional" />
 
-<!-- ================= FORM ELEMENTS ================= -->
-<div class="section" id="form">
-<h2>Form Elements</h2>
+        <label for="address">Address:</label>
+        <textarea id="address" name="address" placeholder="Street, City"></textarea>
 
-<form autocomplete="off">
+        <label>Gender:</label>
+        <div class="inline-group" role="radiogroup" aria-label="Gender">
+          <label for="gender-m"><input id="gender-m" type="radio" name="gender" value="Male" /> Male</label>
+          <label for="gender-f"><input id="gender-f" type="radio" name="gender" value="Female" /> Female</label>
+          <label for="gender-o"><input id="gender-o" type="radio" name="gender" value="Other" /> Other</label>
+        </div>
 
-<label>Name</label>
-<input type="text" id="name">
+        <label>Days:</label>
+        <div class="inline-group" aria-label="Days">
+          <label for="day-mon"><input id="day-mon" type="checkbox" name="days" value="Mon" /> Mon</label>
+          <label for="day-tue"><input id="day-tue" type="checkbox" name="days" value="Tue" /> Tue</label>
+          <label for="day-wed"><input id="day-wed" type="checkbox" name="days" value="Wed" /> Wed</label>
+          <label for="day-thu"><input id="day-thu" type="checkbox" name="days" value="Thu" /> Thu</label>
+          <label for="day-fri"><input id="day-fri" type="checkbox" name="days" value="Fri" /> Fri</label>
+        </div>
 
-<label>Email</label>
-<input type="email" id="email">
+        <label for="country">Country:</label>
+        <select id="country" name="country">
+          <option value="">Select Country</option>
+          <option>United States</option>
+          <option>United Kingdom</option>
+          <option>India</option>
+          <option>Canada</option>
+          <option>Australia</option>
+        </select>
 
-<label>Phone</label>
-<input type="tel" id="phone">
+        <label for="colors">Colors:</label>
+        <select id="colors" name="colors" multiple size="5" aria-label="Colors">
+          <option>Red</option>
+          <option>Green</option>
+          <option>Blue</option>
+          <option>Yellow</option>
+          <option>Purple</option>
+          <option>Orange</option>
+          <option>Black</option>
+          <option>White</option>
+        </select>
 
-<label>Address</label>
-<textarea id="address"></textarea>
+        <label for="sorted-left">Sorted List:</label>
+        <div class="inline-group" aria-label="Sorted List Transfer" style="align-items:flex-start;">
+          <select id="sorted-left" size="6" style="min-width:160px;">
+            <option>Item 1</option>
+            <option>Item 2</option>
+            <option>Item 3</option>
+            <option>Item 4</option>
+            <option>Item 5</option>
+            <option>Item 6</option>
+          </select>
+          <div class="inline-group" style="flex-direction:column;">
+            <button type="button" id="to-right">&gt;</button>
+            <button type="button" id="to-left">&lt;</button>
+          </div>
+          <select id="sorted-right" size="6" style="min-width:160px;"></select>
+        </div>
 
-<label>Gender</label>
-<input type="radio" name="gender"> Male
-<input type="radio" name="gender"> Female
+        <label for="date1">Date Picker 1 (mm/dd/yyyy):</label>
+        <input id="date1" name="date1" type="text" placeholder="mm/dd/yyyy" />
 
-<label>Days</label>
-<input type="checkbox"> Sunday
-<input type="checkbox"> Monday
-<input type="checkbox"> Tuesday
+        <label for="date2">Date Picker 2 (dd/mm/yyyy):</label>
+        <div style="position:relative;">
+          <input id="date2" name="date2" type="text" placeholder="dd/mm/yyyy" aria-describedby="date2-help" />
+          <div id="date2-pop" class="datepicker-pop hidden" role="dialog" aria-modal="false" aria-label="Date picker"></div>
+          <span id="date2-help" class="help">Format: dd/mm/yyyy</span>
+        </div>
 
-<label>Country</label>
-<select>
-  <option>India</option>
-  <option>USA</option>
-  <option>UK</option>
-</select>
+        <label>Date Picker 3: (Select a Date Range)</label>
+        <div class="inline-group" style="gap:8px;">
+          <input id="range-start" type="text" placeholder="mm/dd/yyyy" />
+          <span>to</span>
+          <input id="range-end" type="text" placeholder="mm/dd/yyyy" />
+        </div>
+      </div>
+      <div class="actions">
+        <button id="form-submit" type="button">Submit</button>
+        <a class="btn" href="https://www.qsgsoft.com/">Home</a>
+        <div id="form-result" class="note" aria-live="polite" style="margin-top:8px;"></div>
+      </div>
+    </section>
 
-</form>
-</div>
+    <!-- Upload Files -->
+    <section aria-labelledby="upload-title">
+      <h2 id="upload-title">Upload Files</h2>
+      <div class="form-grid" style="max-width:520px;">
+        <label for="file-single">Upload Single File</label>
+        <input id="file-single" type="file" />
 
-<!-- ================= DATE PICKERS ================= -->
-<div class="section" id="date">
-<h2>Date Picker</h2>
+        <label for="file-multi">Upload Multiple Files</label>
+        <input id="file-multi" type="file" multiple />
+      </div>
+    </section>
 
-<label>Date Picker 1 (dd/mm/yyyy)</label>
-<input type="text" id="dp1" placeholder="dd/mm/yyyy">
-<div id="dp1Error" class="error"></div>
+    <!-- Static Web Table -->
+    <section aria-labelledby="static-table-title">
+      <h2 id="static-table-title">Static Web Table</h2>
+      <table aria-label="Books Static Table">
+        <thead>
+          <tr><th>BookName</th><th>Author</th><th>Subject</th><th>Price</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Learn Selenium</td><td>Amit</td><td>Selenium</td><td>300</td></tr>
+          <tr><td>Learn Java</td><td>Mukesh</td><td>Java</td><td>500</td></tr>
+          <tr><td>Learn JS</td><td>Animesh</td><td>Javascript</td><td>300</td></tr>
+          <tr><td>Master In Selenium</td><td>Mukesh</td><td>Selenium</td><td>3000</td></tr>
+          <tr><td>Master In Java</td><td>Amod</td><td>JAVA</td><td>2000</td></tr>
+          <tr><td>Master In JS</td><td>Amit</td><td>Javascript</td><td>1000</td></tr>
+        </tbody>
+      </table>
+    </section>
 
-<label>Date Picker 2 (Native)</label>
-<input type="date" id="dp2">
+    <!-- Dynamic Web Table (summary-like metrics) -->
+    <section aria-labelledby="dynamic-table-title">
+      <h2 id="dynamic-table-title">Dynamic Web Table</h2>
+      <div class="form-grid" style="max-width:700px;">
+        <label>CPU load of Chrome process:</label><div>1.3%</div>
+        <label>Memory Size of Firefox process:</label><div>87.0 MB</div>
+        <label>Network speed of Chrome process:</label><div>0.7 Mbps</div>
+        <label>Disk space of Firefox process:</label><div>0.08 MB/s</div>
+      </div>
+    </section>
 
-<label>Date Picker 3 (Range)</label><br><br>
-<input type="date" id="startDate">
-<input type="date" id="endDate">
-<button type="button" onclick="calcRange()">Submit</button>
-<p id="rangeResult"></p>
-</div>
+    <!-- Pagination Web Table -->
+    <section aria-labelledby="pagination-title">
+      <h2 id="pagination-title">Pagination Web Table</h2>
+      <table id="paginated-table" aria-label="Products Table">
+        <thead>
+          <tr><th>ID</th><th>Product</th><th>Price</th><th>Action</th></tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+      <div class="pagination" id="pagination" aria-label="Pagination"></div>
+    </section>
 
-<!-- ================= STATIC TABLE ================= -->
-<div class="section" id="static">
-<h2>Static Web Table</h2>
+    <!-- Tabs section intentionally removed as per requirement -->
+    <!-- <section class="tabs section"> ... Removed ... </section> -->
 
-<table name="BookTable">
-<tr><th>Book</th><th>Author</th><th>Price</th></tr>
-<tr><td>Selenium</td><td>Amit</td><td>300</td></tr>
-<tr><td>Java</td><td>Mukesh</td><td>500</td></tr>
-</table>
-</div>
+    <!-- Dynamic Button -->
+    <section aria-labelledby="dynamic-btn-title">
+      <h2 id="dynamic-btn-title">Dynamic Button</h2>
+      <div class="inline-group">
+        <button id="start-btn" type="button">START</button>
+        <span id="start-status" class="note">Click to enable target button after delay.</span>
+      </div>
+      <div class="actions" style="margin-top:10px;">
+        <button id="delayed-btn" type="button" disabled>Target Button</button>
+      </div>
+    </section>
 
-<!-- ================= DYNAMIC TABLE ================= -->
-<div class="section" id="dynamic">
-<h2>Dynamic Web Table</h2>
+    <!-- Alerts & Popups -->
+    <section aria-labelledby="alerts-title">
+      <h2 id="alerts-title">Alerts &amp; Popups</h2>
+      <div class="inline-group">
+        <button type="button" id="btn-alert">Simple Alert</button>
+        <button type="button" id="btn-confirm">Confirmation Alert</button>
+        <button type="button" id="btn-prompt">Prompt Alert</button>
+      </div>
+      <div id="alert-result" class="note" style="margin-top:8px;" aria-live="polite"></div>
+      <div class="inline-group" style="margin-top:12px; gap:12px;">
+        <button id="btn-new-tab" type="button">New Tab</button>
+        <button id="btn-popup" type="button">Popup Windows</button>
+      </div>
+    </section>
 
-<table id="taskTable">
-<thead>
-<tr><th>Name</th><th>CPU</th><th>Memory</th></tr>
-</thead>
-<tbody></tbody>
-</table>
+    <!-- Mouse Hover -->
+    <section aria-labelledby="hover-title">
+      <h2 id="hover-title">Mouse Hover</h2>
+      <p>Move the mouse over the button to open the dropdown menu.</p>
+      <div class="hover-wrapper">
+        <button class="btn" aria-haspopup="true" aria-expanded="false">Point Me</button>
+        <div class="hover-menu" role="menu">
+          <a href="https://www.qsgsoft.com/" role="menuitem">Link 1</a>
+          <a href="https://www.qsgsoft.com/" role="menuitem">Link 2</a>
+          <a href="https://www.qsgsoft.com/" role="menuitem">Link 3</a>
+        </div>
+      </div>
+    </section>
 
-<button type="button" onclick="loadDynamic()">Refresh</button>
-</div>
+    <!-- Double Click -->
+    <section aria-labelledby="dc-title">
+      <h2 id="dc-title">Double Click</h2>
+      <p>Double click on button, the text from Field1 will be copied into Field2.</p>
+      <div class="dc-grid">
+        <div>
+          <label for="dc-field1">Field1:</label>
+          <input id="dc-field1" type="text" value="Hello World!" />
+        </div>
+        <div>
+          <label for="dc-field2">Field2:</label>
+          <input id="dc-field2" type="text" placeholder="Copy Text" />
+        </div>
+        <button id="dc-btn" type="button">Copy</button>
+      </div>
+    </section>
 
-<!-- ================= FILE UPLOAD ================= -->
-<div class="section" id="upload">
-<h2>Upload Files</h2>
+    <!-- Drag and Drop -->
+    <section aria-labelledby="drag-title">
+      <h2 id="drag-title">Drag and Drop</h2>
+      <div class="drag-area">
+        <div id="drag-me" class="draggable" draggable="true" aria-grabbed="false">Drag me to my target</div>
+        <div id="drop-here" class="droppable" aria-dropeffect="move">Drop here</div>
+      </div>
+    </section>
 
-<input type="file" id="fileUpload">
-<p id="fileStatus"></p>
-</div>
+    <!-- Slider -->
+    <section aria-labelledby="slider-title">
+      <h2 id="slider-title">Slider</h2>
+      <div class="slider-wrap">
+        <label for="price-range">Price range:</label>
+        <input id="price-range" type="range" min="0" max="300" value="75" />
+        <span id="price-value" aria-live="polite">$75 - $300</span>
+      </div>
+    </section>
 
-</div>
+    <!-- SVG Elements -->
+    <section aria-labelledby="svg-title">
+      <h2 id="svg-title">SVG Elements</h2>
+      <div class="svg-grid">
+        <div class="svg-item" aria-label="Image">
+          <svg viewBox="0 0 120 80" width="120" height="80" role="img" aria-label="Demo image">
+            <rect x="2" y="2" width="116" height="76" fill="#e0f7fa" stroke="#0097a7" />
+            <circle cx="60" cy="40" r="20" fill="#80deea" stroke="#006064" />
+          </svg>
+        </div>
+        <div class="svg-item" aria-label="Image">
+          <svg viewBox="0 0 120 80" width="120" height="80" role="img" aria-label="Demo image">
+            <rect x="2" y="2" width="116" height="76" fill="#f3e5f5" stroke="#6a1b9a" />
+            <rect x="30" y="20" width="60" height="40" fill="#ce93d8" stroke="#4a148c" />
+          </svg>
+        </div>
+        <div class="svg-item" aria-label="Image">
+          <svg viewBox="0 0 120 80" width="120" height="80" role="img" aria-label="Demo image">
+            <rect x="2" y="2" width="116" height="76" fill="#fff3e0" stroke="#e65100" />
+            <polygon points="20,60 60,20 100,60" fill="#ffcc80" stroke="#bf360c" />
+          </svg>
+        </div>
+      </div>
+    </section>
 
-<script>
-/* ===== DATE PICKER 1 ===== */
-$("#dp1").datepicker({
-  dateFormat: "dd/mm/yy",
-  changeMonth: true,
-  changeYear: true
-});
+    <!-- Scrolling Dropdown -->
+    <section aria-labelledby="scroll-dd-title">
+      <h2 id="scroll-dd-title">Scrolling DropDown</h2>
+      <label for="long-dd">Choose an option:</label>
+      <select id="long-dd" size="8" style="max-width:340px;">
+        <option>Option 1</option>
+        <option>Option 2</option>
+        <option>Option 3</option>
+        <option>Option 4</option>
+        <option>Option 5</option>
+        <option>Option 6</option>
+        <option>Option 7</option>
+        <option>Option 8</option>
+        <option>Option 9</option>
+        <option>Option 10</option>
+        <option>Option 11</option>
+        <option>Option 12</option>
+        <option>Option 13</option>
+        <option>Option 14</option>
+        <option>Option 15</option>
+        <option>Option 16</option>
+      </select>
+    </section>
 
-$("#dp1").on("blur", function () {
-  const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/\d{4}$/;
-  if (this.value && !regex.test(this.value)) {
-    $("#dp1Error").text("Invalid format. Use dd/mm/yyyy");
-    this.value = "";
-  } else {
-    $("#dp1Error").text("");
-  }
-});
+    <!-- Labels and Links -->
+    <section aria-labelledby="labels-links-title">
+      <h2 id="labels-links-title">Labels And Links</h2>
+      <div class="label-links">
+        <div>
+          <h3>Mobile Labels</h3>
+          <p>Samsung<br/>Real Me<br/>Moto</p>
+        </div>
+        <div>
+          <h3>Laptop Links</h3>
+          <p>
+            <a href="https://www.qsgsoft.com/">Apple</a>
+            <a href="https://www.qsgsoft.com/">Lenovo</a>
+            <a href="https://www.qsgsoft.com/">Dell</a>
+          </p>
+          <h3>Broken Links</h3>
+          <p>
+            <a href="https://www.qsgsoft.com/">Errorcode 400</a>
+            <a href="https://www.qsgsoft.com/">Errorcode 401</a>
+            <a href="https://www.qsgsoft.com/">Errorcode 403</a>
+            <a href="https://www.qsgsoft.com/">Errorcode 404</a>
+            <a href="https://www.qsgsoft.com/">Errorcode 408</a>
+            <a href="https://www.qsgsoft.com/">Errorcode 500</a>
+            <a href="https://www.qsgsoft.com/">Errorcode 502</a>
+            <a href="https://www.qsgsoft.com/">Errorcode 503</a>
+          </p>
+        </div>
+      </div>
+    </section>
 
-/* ===== DATE RANGE ===== */
-function calcRange() {
-  const s = document.getElementById("startDate").value;
-  const e = document.getElementById("endDate").value;
-  if (!s || !e) return;
-  const diff = (new Date(e) - new Date(s)) / (1000*60*60*24);
-  document.getElementById("rangeResult").innerText =
-    diff >= 0 ? `Range: ${diff} days` : "Invalid range";
-}
+    <!-- Frames & Windows -->
+    <section aria-labelledby="frames-title">
+      <h2 id="frames-title">Frames &amp; Windows</h2>
+      <div class="inline-group" style="align-items:flex-start; gap:16px;">
+        <div style="flex:1;">
+          <h3>Frame (inline)</h3>
+          <iframe title="Inline Frame" style="width:100%; height:160px; border:1px solid #ccc; border-radius:6px;" srcdoc="<p style='font-family:Arial,Helvetica,sans-serif'>This is a sample frame content.<br/><a href='https://www.qsgsoft.com/'>Visit QSGSoft</a></p>"></iframe>
+        </div>
+        <div style="flex:1;">
+          <h3>Window Actions</h3>
+          <div class="inline-group" style="gap:10px;">
+            <button id="win-new" type="button">Open New Window</button>
+            <button id="win-close" type="button">Close Last Window</button>
+          </div>
+          <div id="win-status" class="note" style="margin-top:8px;" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
 
-/* ===== DYNAMIC TABLE ===== */
-function loadDynamic() {
-  const tbody = document.querySelector("#taskTable tbody");
-  tbody.innerHTML = "";
-  [["Chrome","2.6%","36MB"],["Firefox","1.1%","67MB"]]
-    .forEach(r=>{
-      const tr=document.createElement("tr");
-      r.forEach(c=>{
-        const td=document.createElement("td");
-        td.innerText=c;
-        tr.appendChild(td);
-      });
-      tbody.appendChild(tr);
+    <!-- Keyboard Actions -->
+    <section aria-labelledby="keyboard-title">
+      <h2 id="keyboard-title">Keyboard Actions</h2>
+      <p>Use arrow keys to move the box within the area.</p>
+      <div class="kb-area" tabindex="0" aria-label="Keyboard controlled area">
+        <div class="kb-box" id="kb-box" role="img" aria-label="Movable box"></div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;">
+        <div>
+          Theme images by <a href="https://www.qsgsoft.com/">merrymoonmary</a>. Powered by <a href="https://www.qsgsoft.com/">Blogger</a>.
+        </div>
+        <div>
+          <a href="https://www.qsgsoft.com/">Home</a>
+          &nbsp;|&nbsp;
+          <a href="https://www.qsgsoft.com/">Hidden Elements &amp; AJAX</a>
+          &nbsp;|&nbsp;
+          <a href="https://www.qsgsoft.com/">Download Files</a>
+          &nbsp;|&nbsp;
+          <a href="https://www.qsgsoft.com/">ShadowDOM</a>
+          &nbsp;|&nbsp;
+          <a href="https://www.qsgsoft.com/">Mobiles</a>
+          &nbsp;|&nbsp;
+          <a href="https://www.qsgsoft.com/">Laptops</a>
+          &nbsp;|&nbsp;
+          <a href="https://www.qsgsoft.com/">Blog</a>
+          &nbsp;|&nbsp;
+          <a href="https://www.qsgsoft.com/">Youtube</a>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    /* Utilities */
+    function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+    function $all(sel, ctx) { return Array.from((ctx || document).querySelectorAll(sel)); }
+
+    /* Link replacement safety: ensure any future anchors point to qsgsoft */
+    document.addEventListener('DOMContentLoaded', () => {
+      $all('a').forEach(a => { a.href = 'https://www.qsgsoft.com/'; });
     });
-}
 
-/* ===== FILE UPLOAD ===== */
-document.getElementById("fileUpload").addEventListener("change", function () {
-  document.getElementById("fileStatus").innerText =
-    this.files.length ? this.files[0].name : "";
-});
-</script>
+    /* Sorted list transfer */
+    (function(){
+      const left = $('#sorted-left');
+      const right = $('#sorted-right');
+      $('#to-right').addEventListener('click', () => {
+        Array.from(left.selectedOptions).forEach(opt => right.appendChild(opt));
+      });
+      $('#to-left').addEventListener('click', () => {
+        Array.from(right.selectedOptions).forEach(opt => left.appendChild(opt));
+      });
+    })();
 
+    /* Date validation: dd/mm/yyyy */
+    function isValidDDMMYYYY(value) {
+      const m = /^([0-3]\d)\/([01]\d)\/(\d{4})$/.exec(value);
+      if (!m) return false;
+      const dd = parseInt(m[1], 10); const mm = parseInt(m[2], 10); const yyyy = parseInt(m[3], 10);
+      if (mm < 1 || mm > 12) return false;
+      const daysInMonth = new Date(yyyy, mm, 0).getDate();
+      return dd >= 1 && dd <= daysInMonth;
+    }
+
+    /* Simple calendar datepicker for dd/mm/yyyy */
+    (function(){
+      const input = $('#date2');
+      const pop = $('#date2-pop');
+      let current = new Date();
+      const dow = ['Su','Mo','Tu','We','Th','Fr','Sa'];
+
+      function render(monthDate) {
+        pop.innerHTML = '';
+        const header = document.createElement('div');
+        header.className = 'datepicker-header';
+        const title = document.createElement('div');
+        title.textContent = monthDate.toLocaleString(undefined, { month: 'long', year: 'numeric' });
+        const nav = document.createElement('div'); nav.className = 'datepicker-nav';
+        const prev = document.createElement('button'); prev.textContent = '<'; prev.className = 'btn';
+        const next = document.createElement('button'); next.textContent = '>'; next.className = 'btn';
+        nav.appendChild(prev); nav.appendChild(next);
+        header.appendChild(title); header.appendChild(nav);
+        pop.appendChild(header);
+
+        const grid = document.createElement('div'); grid.className = 'datepicker-grid';
+        dow.forEach(d => { const c = document.createElement('div'); c.className = 'datepicker-cell datepicker-dow'; c.textContent = d; grid.appendChild(c); });
+        const firstDay = new Date(monthDate.getFullYear(), monthDate.getMonth(), 1).getDay();
+        const days = new Date(monthDate.getFullYear(), monthDate.getMonth()+1, 0).getDate();
+        for (let i=0;i<firstDay;i++){ grid.appendChild(document.createElement('div')); }
+        for (let day=1; day<=days; day++) {
+          const cell = document.createElement('div'); cell.className = 'datepicker-cell'; cell.textContent = String(day);
+          cell.addEventListener('click', () => {
+            const dd = String(day).padStart(2,'0');
+            const mm = String(monthDate.getMonth()+1).padStart(2,'0');
+            const yyyy = monthDate.getFullYear();
+            input.value = `${dd}/${mm}/${yyyy}`;
+            pop.classList.add('hidden');
+            input.dispatchEvent(new Event('input'));
+          });
+          grid.appendChild(cell);
+        }
+        pop.appendChild(grid);
+
+        prev.addEventListener('click', () => { current = new Date(current.getFullYear(), current.getMonth()-1, 1); render(current); });
+        next.addEventListener('click', () => { current = new Date(current.getFullYear(), current.getMonth()+1, 1); render(current); });
+      }
+
+      input.addEventListener('focus', () => {
+        const rect = input.getBoundingClientRect();
+        pop.style.top = (input.offsetTop + input.offsetHeight + 6) + 'px';
+        pop.style.left = (input.offsetLeft) + 'px';
+        pop.classList.remove('hidden');
+        current = new Date(); render(current);
+      });
+      document.addEventListener('click', (e) => {
+        if (e.target === input || pop.contains(e.target)) return;
+        pop.classList.add('hidden');
+      });
+      input.addEventListener('input', () => {
+        const v = input.value.trim();
+        if (v.length >= 8) {
+          input.style.borderColor = isValidDDMMYYYY(v) ? '#4caf50' : '#f44336';
+        } else {
+          input.style.borderColor = '#ccc';
+        }
+      });
+    })();
+
+    /* Form submission and validations */
+    (function(){
+      const name = $('#name');
+      const email = $('#email');
+      const date2 = $('#date2');
+      const result = $('#form-result');
+      $('#form-submit').addEventListener('click', () => {
+        const issues = [];
+        const nameVal = (name.value || '').trim();
+        if (nameVal.length < 3) issues.push('Name must be at least 3 characters.');
+        const emailVal = (email.value || '').trim();
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal);
+        if (!emailOk) issues.push('Email must be a valid format.');
+        const dateVal = (date2.value || '').trim();
+        if (!isValidDDMMYYYY(dateVal)) issues.push('Date must be valid dd/mm/yyyy.');
+
+        if (issues.length) {
+          result.textContent = 'Errors: ' + issues.join(' ');
+          result.style.color = '#d32f2f';
+        } else {
+          result.textContent = 'Form submitted successfully!';
+          result.style.color = '#2e7d32';
+        }
+      });
+    })();
+
+    /* Pagination table */
+    (function(){
+      const data = [
+        {id:1, product:'Smartphone', price:'$10.99'},
+        {id:2, product:'Laptop', price:'$19.99'},
+        {id:3, product:'Tablet', price:'$5.99'},
+        {id:4, product:'Smartwatch', price:'$7.99'},
+        {id:5, product:'Wireless Earbuds', price:'$8.99'},
+        {id:6, product:'Monitor', price:'$12.49'},
+        {id:7, product:'Keyboard', price:'$3.99'},
+        {id:8, product:'Mouse', price:'$2.99'},
+        {id:9, product:'Webcam', price:'$6.99'},
+        {id:10, product:'Microphone', price:'$4.99'},
+        {id:11, product:'Speaker', price:'$11.99'},
+        {id:12, product:'Charger', price:'$1.99'},
+        {id:13, product:'Case', price:'$2.49'},
+        {id:14, product:'Dock', price:'$9.49'},
+        {id:15, product:'Adapter', price:'$0.99'}
+      ];
+      const pageSize = 5;
+      const tbody = $('#paginated-table tbody');
+      const pag = $('#pagination');
+      let page = 1;
+
+      function renderPage(p) {
+        tbody.innerHTML = '';
+        const start = (p-1)*pageSize;
+        const slice = data.slice(start, start+pageSize);
+        slice.forEach(row => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `<td>${row.id}</td><td>${row.product}</td><td>${row.price}</td><td><a href=\"https://www.qsgsoft.com/\">Buy</a></td>`;
+          tbody.appendChild(tr);
+        });
+        renderPagination();
+      }
+      function renderPagination() {
+        pag.innerHTML = '';
+        const totalPages = Math.ceil(data.length / pageSize);
+        for (let i=1;i<=totalPages;i++) {
+          const span = document.createElement('span');
+          span.className = 'page' + (i===page ? ' active' : '');
+          span.textContent = String(i);
+          span.setAttribute('role', 'button');
+          span.setAttribute('aria-label', 'Page ' + i);
+          span.addEventListener('click', () => { page = i; renderPage(page); });
+          pag.appendChild(span);
+        }
+      }
+      renderPage(page);
+    })();
+
+    /* Dynamic Button: enable delayed button after 2s */
+    (function(){
+      const start = $('#start-btn');
+      const status = $('#start-status');
+      const target = $('#delayed-btn');
+      start.addEventListener('click', () => {
+        status.textContent = 'Enabling in 2 seconds...';
+        target.disabled = true;
+        setTimeout(() => { target.disabled = false; status.textContent = 'Target Button enabled.'; }, 2000);
+      });
+    })();
+
+    /* Alerts & Popups */
+    (function(){
+      const res = $('#alert-result');
+      $('#btn-alert').addEventListener('click', () => { alert('This is a simple alert.'); res.textContent = 'Alert shown.'; });
+      $('#btn-confirm').addEventListener('click', () => { const ok = confirm('Do you confirm?'); res.textContent = 'Confirmation: ' + (ok ? 'OK' : 'Cancel'); });
+      $('#btn-prompt').addEventListener('click', () => { const val = prompt('Enter a value:'); res.textContent = 'Prompt value: ' + (val ?? '(none)'); });
+
+      $('#btn-new-tab').addEventListener('click', () => { window.open('https://www.qsgsoft.com/', '_blank'); res.textContent = 'Opened new tab.'; });
+      $('#btn-popup').addEventListener('click', () => {
+        const w = window.open('https://www.qsgsoft.com/', 'popup', 'width=600,height=420');
+        res.textContent = w ? 'Popup opened.' : 'Popup blocked.';
+      });
+    })();
+
+    /* Double Click copy */
+    (function(){
+      const f1 = $('#dc-field1');
+      const f2 = $('#dc-field2');
+      const btn = $('#dc-btn');
+      function copy() { f2.value = f1.value; }
+      btn.addEventListener('dblclick', copy);
+      btn.addEventListener('click', copy); // also copy on single click
+    })();
+
+    /* Drag & Drop */
+    (function(){
+      const dragEl = $('#drag-me');
+      const dropEl = $('#drop-here');
+      dragEl.addEventListener('dragstart', (e) => {
+        e.dataTransfer.setData('text/plain', 'drag');
+        dragEl.style.opacity = '0.6';
+      });
+      dragEl.addEventListener('dragend', () => { dragEl.style.opacity = '1'; });
+      dropEl.addEventListener('dragover', (e) => { e.preventDefault(); dropEl.style.backgroundColor = '#fff8e6'; });
+      dropEl.addEventListener('dragleave', () => { dropEl.style.backgroundColor = '#fff3e0'; });
+      dropEl.addEventListener('drop', (e) => {
+        e.preventDefault();
+        dropEl.classList.add('success');
+        dropEl.textContent = 'Dropped!';
+      });
+    })();
+
+    /* Slider display */
+    (function(){
+      const range = $('#price-range');
+      const label = $('#price-value');
+      function update(){ label.textContent = `$${range.value} - $300`; }
+      range.addEventListener('input', update);
+      update();
+    })();
+
+    /* Windows control */
+    (function(){
+      let lastWin = null;
+      $('#win-new').addEventListener('click', () => {
+        lastWin = window.open('https://www.qsgsoft.com/', '_blank', 'width=800,height=600');
+        $('#win-status').textContent = lastWin ? 'Window opened.' : 'Window blocked.';
+      });
+      $('#win-close').addEventListener('click', () => {
+        if (lastWin && !lastWin.closed) { lastWin.close(); $('#win-status').textContent = 'Last window closed.'; }
+        else { $('#win-status').textContent = 'No window to close.'; }
+      });
+    })();
+
+    /* Keyboard-controlled box */
+    (function(){
+      const area = $('.kb-area');
+      const box = $('#kb-box');
+      let x = 12, y = 12;
+      function clamp(val, min, max){ return Math.max(min, Math.min(max, val)); }
+      area.addEventListener('keydown', (e) => {
+        const step = 8;
+        if (['ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.key)) e.preventDefault();
+        if (e.key === 'ArrowUp') y -= step;
+        if (e.key === 'ArrowDown') y += step;
+        if (e.key === 'ArrowLeft') x -= step;
+        if (e.key === 'ArrowRight') x += step;
+        const maxX = area.clientWidth - box.clientWidth - 4;
+        const maxY = area.clientHeight - box.clientHeight - 4;
+        x = clamp(x, 2, maxX); y = clamp(y, 2, maxY);
+        box.style.left = x + 'px'; box.style.top = y + 'px';
+      });
+    })();
+  </script>
 </body>
 </html>
