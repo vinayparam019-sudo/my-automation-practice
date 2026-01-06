@@ -5,8 +5,13 @@
 <title>Automation Testing Practice</title>
 <meta name="viewport" content="width=1100">
 
+<!-- Fonts -->
 <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600" rel="stylesheet">
+
+<!-- jQuery (ONLY ONCE) -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- jQuery UI -->
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
@@ -23,7 +28,7 @@ body {
   width: 1000px;
   margin: 30px auto;
   background: #fff;
-  padding: 30px;
+  padding: 25px;
 }
 
 h1 {
@@ -52,22 +57,36 @@ h1 {
 
 label {
   font-weight: 600;
-  margin-top: 10px;
   display: block;
+  margin-top: 10px;
 }
 
 input,
 textarea,
 select {
   width: 300px;
-  padding: 8px;
+  padding: 7px;
   margin-top: 5px;
-  pointer-events: auto;   /* 🔑 */
+  pointer-events: auto;
 }
 
-input[type=radio],
-input[type=checkbox] {
+input[type=checkbox],
+input[type=radio] {
   width: auto;
+}
+
+table {
+  width: 80%;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+}
+
+th {
+  background: #f4f4f4;
 }
 
 .error {
@@ -86,34 +105,49 @@ input[type=checkbox] {
 <div class="menu">
   <a href="#form">GUI Elements</a>
   <a href="#date">Date Picker</a>
+  <a href="#static">Static Table</a>
+  <a href="#dynamic">Dynamic Table</a>
+  <a href="#upload">Upload</a>
 </div>
 
-<!-- ================= FORM ================= -->
+<!-- ================= FORM ELEMENTS ================= -->
 <div class="section" id="form">
 <h2>Form Elements</h2>
 
 <form autocomplete="off">
 
-<label for="name">Name</label>
-<input type="text" id="name" name="name">
+<label>Name</label>
+<input type="text" id="name">
 
-<label for="email">Email</label>
-<input type="email" id="email" name="email">
+<label>Email</label>
+<input type="email" id="email">
 
-<label for="phone">Phone</label>
-<input type="tel" id="phone" name="phone">
+<label>Phone</label>
+<input type="tel" id="phone">
 
-<label for="address">Address</label>
+<label>Address</label>
 <textarea id="address"></textarea>
 
 <label>Gender</label>
-<input type="radio" name="gender" value="male"> Male
-<input type="radio" name="gender" value="female"> Female
+<input type="radio" name="gender"> Male
+<input type="radio" name="gender"> Female
+
+<label>Days</label>
+<input type="checkbox"> Sunday
+<input type="checkbox"> Monday
+<input type="checkbox"> Tuesday
+
+<label>Country</label>
+<select>
+  <option>India</option>
+  <option>USA</option>
+  <option>UK</option>
+</select>
 
 </form>
 </div>
 
-<!-- ================= DATE PICKER ================= -->
+<!-- ================= DATE PICKERS ================= -->
 <div class="section" id="date">
 <h2>Date Picker</h2>
 
@@ -121,32 +155,99 @@ input[type=checkbox] {
 <input type="text" id="dp1" placeholder="dd/mm/yyyy">
 <div id="dp1Error" class="error"></div>
 
-<label>Date Picker 2 (Browser native)</label>
+<label>Date Picker 2 (Native)</label>
 <input type="date" id="dp2">
 
+<label>Date Picker 3 (Range)</label><br><br>
+<input type="date" id="startDate">
+<input type="date" id="endDate">
+<button type="button" onclick="calcRange()">Submit</button>
+<p id="rangeResult"></p>
+</div>
+
+<!-- ================= STATIC TABLE ================= -->
+<div class="section" id="static">
+<h2>Static Web Table</h2>
+
+<table name="BookTable">
+<tr><th>Book</th><th>Author</th><th>Price</th></tr>
+<tr><td>Selenium</td><td>Amit</td><td>300</td></tr>
+<tr><td>Java</td><td>Mukesh</td><td>500</td></tr>
+</table>
+</div>
+
+<!-- ================= DYNAMIC TABLE ================= -->
+<div class="section" id="dynamic">
+<h2>Dynamic Web Table</h2>
+
+<table id="taskTable">
+<thead>
+<tr><th>Name</th><th>CPU</th><th>Memory</th></tr>
+</thead>
+<tbody></tbody>
+</table>
+
+<button type="button" onclick="loadDynamic()">Refresh</button>
+</div>
+
+<!-- ================= FILE UPLOAD ================= -->
+<div class="section" id="upload">
+<h2>Upload Files</h2>
+
+<input type="file" id="fileUpload">
+<p id="fileStatus"></p>
 </div>
 
 </div>
 
 <script>
-// jQuery UI datepicker with strict format
+/* ===== DATE PICKER 1 ===== */
 $("#dp1").datepicker({
   dateFormat: "dd/mm/yy",
   changeMonth: true,
   changeYear: true
 });
 
-// Manual validation
 $("#dp1").on("blur", function () {
-  const value = this.value;
   const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/\d{4}$/;
-
-  if (value && !regex.test(value)) {
-    $("#dp1Error").text("Invalid date format. Use dd/mm/yyyy");
+  if (this.value && !regex.test(this.value)) {
+    $("#dp1Error").text("Invalid format. Use dd/mm/yyyy");
     this.value = "";
   } else {
     $("#dp1Error").text("");
   }
+});
+
+/* ===== DATE RANGE ===== */
+function calcRange() {
+  const s = document.getElementById("startDate").value;
+  const e = document.getElementById("endDate").value;
+  if (!s || !e) return;
+  const diff = (new Date(e) - new Date(s)) / (1000*60*60*24);
+  document.getElementById("rangeResult").innerText =
+    diff >= 0 ? `Range: ${diff} days` : "Invalid range";
+}
+
+/* ===== DYNAMIC TABLE ===== */
+function loadDynamic() {
+  const tbody = document.querySelector("#taskTable tbody");
+  tbody.innerHTML = "";
+  [["Chrome","2.6%","36MB"],["Firefox","1.1%","67MB"]]
+    .forEach(r=>{
+      const tr=document.createElement("tr");
+      r.forEach(c=>{
+        const td=document.createElement("td");
+        td.innerText=c;
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+}
+
+/* ===== FILE UPLOAD ===== */
+document.getElementById("fileUpload").addEventListener("change", function () {
+  document.getElementById("fileStatus").innerText =
+    this.files.length ? this.files[0].name : "";
 });
 </script>
 
