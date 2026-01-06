@@ -11,46 +11,32 @@
 <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>
 
 <style>
-/* ===== RESET ===== */
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-/* ===== BODY ===== */
 body {
   font-family: "Open Sans", sans-serif;
   background: #e9edec;
-  color: #373737;
   margin: 0;
 }
 
-/* ===== WRAPPER ===== */
 .wrapper {
   width: 1000px;
   margin: 30px auto;
-  background: #ffffff;
-  position: relative;
-  z-index: 1;
+  background: #fff;
+  padding: 30px;
 }
 
-/* ===== HEADER ===== */
-.header {
+h1 {
   text-align: center;
-  padding: 30px 0;
-}
-
-.header h1 {
-  font-size: 40px;
   color: #b51200;
-  margin: 0;
 }
 
-/* ===== MENU ===== */
 .menu {
   text-align: center;
   border-top: 1px solid #dedede;
   border-bottom: 1px solid #dedede;
   padding: 10px 0;
+  margin-bottom: 30px;
 }
 
 .menu a {
@@ -58,45 +44,35 @@ body {
   font-size: 18px;
   color: #00299b;
   text-decoration: none;
-  pointer-events: auto;
-}
-
-/* ===== CONTENT ===== */
-.content {
-  padding: 25px;
-  position: relative;
-  z-index: 10; /* 🔑 THIS FIXES INPUTS */
 }
 
 .section {
-  margin-bottom: 35px;
+  margin-bottom: 40px;
 }
 
-h2 {
-  font-size: 28px;
-  margin-bottom: 15px;
-}
-
-/* ===== FORM ===== */
 label {
   font-weight: 600;
+  margin-top: 10px;
+  display: block;
 }
 
 input,
 textarea,
 select {
-  width: 280px;
-  padding: 6px;
-  margin-bottom: 10px;
-  display: block;
-  position: relative;
-  z-index: 20; /* 🔑 CRITICAL */
+  width: 300px;
+  padding: 8px;
+  margin-top: 5px;
+  pointer-events: auto;   /* 🔑 */
 }
 
-input[type=checkbox],
-input[type=radio] {
+input[type=radio],
+input[type=checkbox] {
   width: auto;
-  display: inline-block;
+}
+
+.error {
+  color: red;
+  font-size: 14px;
 }
 </style>
 </head>
@@ -105,63 +81,72 @@ input[type=radio] {
 
 <div class="wrapper">
 
-  <div class="header">
-    <h1>Automation Testing Practice</h1>
-  </div>
+<h1>Automation Testing Practice</h1>
 
-  <div class="menu">
-    <a href="#gui">GUI Elements</a>
-    <a href="#date">Date Picker</a>
-    <a href="#table">Web Tables</a>
-  </div>
+<div class="menu">
+  <a href="#form">GUI Elements</a>
+  <a href="#date">Date Picker</a>
+</div>
 
-  <div class="content">
+<!-- ================= FORM ================= -->
+<div class="section" id="form">
+<h2>Form Elements</h2>
 
-    <!-- FORM -->
-    <div class="section" id="gui">
-      <h2>Form Elements</h2>
+<form autocomplete="off">
 
-      <label>Name</label>
-      <input type="text" id="name">
+<label for="name">Name</label>
+<input type="text" id="name" name="name">
 
-      <label>Email</label>
-      <input type="text" id="email">
+<label for="email">Email</label>
+<input type="email" id="email" name="email">
 
-      <label>Phone</label>
-      <input type="text" id="phone">
+<label for="phone">Phone</label>
+<input type="tel" id="phone" name="phone">
 
-      <label>Address</label>
-      <textarea id="address"></textarea>
+<label for="address">Address</label>
+<textarea id="address"></textarea>
 
-      <label>Gender</label>
-      <input type="radio" name="gender"> Male
-      <input type="radio" name="gender"> Female
-    </div>
+<label>Gender</label>
+<input type="radio" name="gender" value="male"> Male
+<input type="radio" name="gender" value="female"> Female
 
-    <!-- DATE -->
-    <div class="section" id="date">
-      <h2>Date Picker</h2>
-      <input type="text" id="dp1">
-      <input type="text" id="dp2" readonly>
-    </div>
+</form>
+</div>
 
-    <!-- TABLE -->
-    <div class="section" id="table">
-      <h2>Static Web Table</h2>
-      <table border="1" cellpadding="8">
-        <tr><th>Book</th><th>Author</th><th>Price</th></tr>
-        <tr><td>Selenium</td><td>Amit</td><td>300</td></tr>
-        <tr><td>Java</td><td>Mukesh</td><td>500</td></tr>
-      </table>
-    </div>
+<!-- ================= DATE PICKER ================= -->
+<div class="section" id="date">
+<h2>Date Picker</h2>
 
-  </div>
+<label>Date Picker 1 (dd/mm/yyyy)</label>
+<input type="text" id="dp1" placeholder="dd/mm/yyyy">
+<div id="dp1Error" class="error"></div>
+
+<label>Date Picker 2 (Browser native)</label>
+<input type="date" id="dp2">
+
+</div>
+
 </div>
 
 <script>
-$(function () {
-  $("#dp1").datepicker();
-  $("#dp2").datepicker({ dateFormat: "dd/mm/yy" });
+// jQuery UI datepicker with strict format
+$("#dp1").datepicker({
+  dateFormat: "dd/mm/yy",
+  changeMonth: true,
+  changeYear: true
+});
+
+// Manual validation
+$("#dp1").on("blur", function () {
+  const value = this.value;
+  const regex = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[012])\/\d{4}$/;
+
+  if (value && !regex.test(value)) {
+    $("#dp1Error").text("Invalid date format. Use dd/mm/yyyy");
+    this.value = "";
+  } else {
+    $("#dp1Error").text("");
+  }
 });
 </script>
 
