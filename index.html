@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>QSG Automation Practice</title>
+  <title>QSG Automation Testing Practice</title>
   <style>
     /* Global Reset */
     *, *::before, *::after { box-sizing: border-box; }
@@ -29,12 +29,20 @@
       background: #ffffff;
       border-bottom: 1px solid #e0e0e0;
       padding: 24px 24px 16px;
+      position: relative;
     }
     header h1 {
       margin: 0 0 8px 0;
       font-size: 28px;
       color: #111;
       font-weight: 700;
+    }
+    header .logo {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      max-width: 150px;
+      height: auto;
     }
     header p.subtitle { margin: 0; color: #666; }
 
@@ -216,7 +224,10 @@
   <div class="container">
     <!-- Header -->
     <header>
-      <h1>QSG Automation Practice</h1>
+      <a href="https://www.qsgsoft.com/" target="_blank">
+        <img src="https://www.qsgsoft.com/wp-content/uploads/2020/01/logo.svg" alt="QSG - Quality Service Group Logo" class="logo">
+      </a>
+      <h1>Automation Testing Practice</h1>
       <p class="subtitle">For Selenium, Cypress &amp; Playwright</p>
       <nav class="top-nav" aria-label="Primary">
         <a href="https://www.qsgsoft.com/" aria-label="Home">Home</a>
@@ -767,13 +778,13 @@
     <footer>
       <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
         <div style="text-align:center; flex:1;">
-          <a href="https://www.qsgsoft.com/">Mobiles</a>
+          <a href="https://www.apple.com/">Mobiles</a>
           &nbsp;|&nbsp;
-          <a href="https://www.qsgsoft.com/">Laptops</a>
+          <a href="https://www.lenovo.com/in/en/">Laptops</a>
           &nbsp;|&nbsp;
-          <a href="https://www.qsgsoft.com/">Blog</a>
+          <a href="https://www.qsgsoft.com/category/blog/">Blog</a>
           &nbsp;|&nbsp;
-          <a href="https://www.qsgsoft.com/">Youtube</a>
+          <a href="https://www.youtube.com/">Youtube</a>
         </div>
         <div style="text-align:right; font-size:12px; color:#888;">
           <p style="margin:2px 0;">Author: Vinay VP</p>
@@ -1369,4 +1380,3 @@
   </script>
 </body>
 </html>
-
