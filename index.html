@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Automation Testing Practice</title>
+  <title>QSG Automation Testing Practice</title>
   <style>
     /* Global Reset */
     *, *::before, *::after { box-sizing: border-box; }
@@ -326,17 +326,78 @@
     <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
     <script>
-      $(function() {
-        $("#datepicker").datepicker();
-        $("#txtDate").datepicker({
-          changeMonth: true,
-          changeYear: true,
-          dateFormat: 'dd/mm/yy',
-          showOn: 'focus'
-        });
-        $("#start-date").datepicker({ dateFormat: 'mm/dd/yy' });
-        $("#end-date").datepicker({ dateFormat: 'mm/dd/yy' });
-      });
+      (function initDatepickers() {
+        const jq = window.jQuery;
+        const selectors = {
+          d1: '#datepicker',
+          d2: '#txtDate',
+          rangeStart: '#start-date',
+          rangeEnd: '#end-date'
+        };
+
+        const applyNativeFallback = () => {
+          const toNative = (input, format) => {
+            if (!input) return;
+            input.type = 'date';
+            input.addEventListener('change', () => {
+              const iso = input.value;
+              if (!iso) return;
+              const [yyyy, mm, dd] = iso.split('-');
+              const formatted = format === 'dd/mm/yyyy' ? `${dd}/${mm}/${yyyy}` : `${mm}/${dd}/${yyyy}`;
+              input.type = 'text';
+              input.value = formatted;
+            });
+            // Make the picker visible immediately when focusing
+            input.addEventListener('focus', () => {
+              input.type = 'date';
+              input.showPicker?.();
+            });
+            input.addEventListener('blur', () => {
+              if (!input.value) { input.type = 'text'; return; }
+              const iso = input.value;
+              const [yyyy, mm, dd] = iso.split('-');
+              const formatted = format === 'dd/mm/yyyy' ? `${dd}/${mm}/${yyyy}` : `${mm}/${dd}/${yyyy}`;
+              input.type = 'text';
+              input.value = formatted;
+            });
+          };
+
+          toNative(document.querySelector(selectors.d1), 'mm/dd/yyyy');
+          toNative(document.querySelector(selectors.d2), 'dd/mm/yyyy');
+          toNative(document.querySelector(selectors.rangeStart), 'mm/dd/yyyy');
+          toNative(document.querySelector(selectors.rangeEnd), 'mm/dd/yyyy');
+        };
+
+        const initWithjQueryUI = ($jq) => {
+          $jq(() => {
+            if (!$jq.fn || typeof $jq.fn.datepicker !== 'function') {
+              applyNativeFallback();
+              return;
+            }
+            $jq(selectors.d1).datepicker();
+            $jq(selectors.d2).datepicker({
+              changeMonth: true,
+              changeYear: true,
+              dateFormat: 'dd/mm/yy',
+              showOn: 'focus'
+            });
+            $jq(selectors.rangeStart).datepicker({ dateFormat: 'mm/dd/yy' });
+            $jq(selectors.rangeEnd).datepicker({ dateFormat: 'mm/dd/yy' });
+          });
+        };
+
+        if (jq && jq.fn && typeof jq.fn.datepicker === 'function') {
+          initWithjQueryUI(jq);
+          return;
+        }
+
+        // Fallback: try to load jQuery UI dynamically, otherwise use native date inputs.
+        const script = document.createElement('script');
+        script.src = 'https://code.jquery.com/ui/1.13.2/jquery-ui.min.js';
+        script.onload = () => initWithjQueryUI(window.jQuery || jq);
+        script.onerror = applyNativeFallback;
+        document.head.appendChild(script);
+      })();
     </script>
 
     <!-- Upload Files -->
@@ -410,6 +471,37 @@
       <div class="pagination" id="pagination" aria-label="Pagination"></div>
     </section>
 
+    <!-- Labels And Links -->
+    <section aria-labelledby="labels-links-title">
+      <h2 id="labels-links-title">Labels And Links</h2>
+      
+      <h3>Mobile Labels</h3>
+      <div class="label-links">
+        <span class="label">Samsung</span>
+        <span class="label">Real Me</span>
+        <span class="label">Moto</span>
+      </div>
+
+      <h3>Laptop Links</h3>
+      <div class="label-links">
+        <a href="https://apple.com" target="_blank">Apple</a>
+        <a href="https://lenovo.com" target="_blank">Lenovo</a>
+        <a href="https://dell.com" target="_blank">Dell</a>
+      </div>
+
+      <h3>Broken Links</h3>
+      <div class="label-links">
+        <a href="https://deadlinkcity.com/errorcode400" target="_blank">Errorcode 400</a>
+        <a href="https://deadlinkcity.com/errorcode401" target="_blank">Errorcode 401</a>
+        <a href="https://deadlinkcity.com/errorcode403" target="_blank">Errorcode 403</a>
+        <a href="https://deadlinkcity.com/errorcode404" target="_blank">Errorcode 404</a>
+        <a href="https://deadlinkcity.com/errorcode408" target="_blank">Errorcode 408</a>
+        <a href="https://deadlinkcity.com/errorcode500" target="_blank">Errorcode 500</a>
+        <a href="https://deadlinkcity.com/errorcode502" target="_blank">Errorcode 502</a>
+        <a href="https://deadlinkcity.com/errorcode503" target="_blank">Errorcode 503</a>
+      </div>
+    </section>
+
     </div> <!-- /.column.left -->
 
     <div class="column right">
@@ -444,7 +536,7 @@
     <section aria-labelledby="dynamic-btn-title">
       <h2 id="dynamic-btn-title">Dynamic Button</h2>
       <div class="inline-group">
-        <button id="start-btn" name="start" class="start" type="button" onclick="toggleButton(this)">START</button>
+        <button id="start-btn" name="start" class="start" type="button">START</button>
       </div>
       <style>
         button.start {
@@ -548,22 +640,22 @@
       <h2 id="scroll-dd-title">Scrolling DropDown</h2>
       <label for="long-dd">Choose an option:</label>
       <select id="long-dd" size="8" style="max-width:100%;">
-        <option>Option 1</option>
-        <option>Option 2</option>
-        <option>Option 3</option>
-        <option>Option 4</option>
-        <option>Option 5</option>
-        <option>Option 6</option>
-        <option>Option 7</option>
-        <option>Option 8</option>
-        <option>Option 9</option>
-        <option>Option 10</option>
-        <option>Option 11</option>
-        <option>Option 12</option>
-        <option>Option 13</option>
-        <option>Option 14</option>
-        <option>Option 15</option>
-        <option>Option 16</option>
+        <option>Item 1</option>
+        <option selected>Item 2</option>
+        <option>Item 3</option>
+        <option>Item 4</option>
+        <option>Item 5</option>
+        <option>Item 6</option>
+        <option>Item 7</option>
+        <option>Item 8</option>
+        <option>Item 9</option>
+        <option>Item 10</option>
+        <option>Item 11</option>
+        <option>Item 12</option>
+        <option>Item 13</option>
+        <option>Item 14</option>
+        <option>Item 15</option>
+        <option>Item 16</option>
       </select>
     </section>
 
@@ -749,6 +841,7 @@
       try {
       const input = $('#date2');
       const pop = $('#date2-pop');
+      if (!input || !pop) return;
       let current = new Date();
       const dow = ['Su','Mo','Tu','We','Th','Fr','Sa'];
 
@@ -993,22 +1086,33 @@
       });
     })();
 
-    /* Dynamic Button: enable delayed button after 2s */
+    /* Dynamic Button: toggle label and enable delayed button after 2s */
     (function(){
       const start = $('#start-btn');
       const status = $('#start-status');
       const target = $('#delayed-btn');
-      
-      if (start) {
-        start.addEventListener('click', () => {
-          if (status) status.textContent = 'Enabling in 2 seconds...';
-          if (target) target.disabled = true;
-          setTimeout(() => { 
-            if (target) target.disabled = false; 
-            if (status) status.textContent = 'Target Button enabled.'; 
-          }, 2000);
-        });
-      }
+
+      if (!start) return;
+
+      const toggleStart = () => {
+        if (start.textContent === 'START') {
+          start.textContent = 'STOP';
+          start.classList.add('stop');
+        } else {
+          start.textContent = 'START';
+          start.classList.remove('stop');
+        }
+      };
+
+      start.addEventListener('click', () => {
+        toggleStart();
+        if (status) status.textContent = 'Enabling in 2 seconds...';
+        if (target) target.disabled = true;
+        setTimeout(() => { 
+          if (target) target.disabled = false; 
+          if (status) status.textContent = 'Target Button enabled.'; 
+        }, 2000);
+      });
     })();
 
     /* Alerts & Popups */
@@ -1078,6 +1182,7 @@
     (function(){
       const area = $('.kb-area');
       const box = $('#kb-box');
+      if (!area || !box) return;
       let x = 12, y = 12;
       function clamp(val, min, max){ return Math.max(min, Math.min(max, val)); }
       area.addEventListener('keydown', (e) => {
@@ -1094,17 +1199,6 @@
       });
     })();
 
-    /* Toggle START/STOP button */
-    function toggleButton(btn) {
-      if (btn.textContent === 'START') {
-        btn.textContent = 'STOP';
-        btn.classList.add('stop');
-      } else {
-        btn.textContent = 'START';
-        btn.classList.remove('stop');
-      }
-    }
-
     /* Shadow DOM initialization */
     (function(){
       const shadowHost = document.getElementById('shadow_host');
@@ -1120,7 +1214,7 @@
           </style>
           <span class="wrapper" id="shadow_content"><span class="info">Mobiles</span><br></span>
           <div id="nested_shadow_host"></div>
-          <a href="https://www.pavantestingtools.com/" target="_blank">Blog</a><br>
+          <a href="https://www.qsgsoft.com/category/blog/" target="_blank">Blog</a><br>
           <a href="https://www.youtube.com/" target="_blank">Youtube</a><br>
           <input type="text" placeholder="Text input" /><br>
           <input type="checkbox" /> Checkbox<br>
