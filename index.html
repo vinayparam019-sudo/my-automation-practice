@@ -53,16 +53,23 @@
     }
 
     /* Section styling */
-    section {
-      padding: 18px 24px;
-      border-bottom: 1px solid #eee;
-    }
+    section { padding: 18px 24px; border-bottom: 1px solid #eee; }
     section h2 {
       margin: 0 0 14px 0;
-      font-size: 22px;
+      font-size: 26px;
       color: #222;
       font-weight: 700;
     }
+      /* Two-column content like the reference */
+      .content-grid { display: grid; grid-template-columns: 1fr 360px; gap: 0; }
+      .column.left > section, .column.right > section { padding: 18px 24px; border-bottom: 1px solid #eee; }
+      .column.right { border-left: 1px solid #e0e0e0; }
+
+      /* Emphasis colors like reference */
+      #gui-title { color: #c0392b; }
+      .text-red { color: #d84315; font-weight: 600; }
+      .text-blue { color: #1565c0; font-weight: 600; }
+
     section h3 {
       margin: 12px 0;
       font-size: 18px;
@@ -126,9 +133,9 @@
     th { background: #fafafa; font-weight: 700; }
 
     /* Pagination */
-    .pagination { display: flex; gap: 8px; margin-top: 10px; }
-    .pagination .page { padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; }
-    .pagination .page.active { background: #e0e0e0; }
+    .pagination { display: flex; gap: 6px; margin-top: 10px; }
+    .pagination .page { padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; background:#fafafa; }
+    .pagination .page.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
 
     /* Mouse Hover dropdown */
     .hover-wrapper { position: relative; display: inline-block; }
@@ -186,6 +193,8 @@
       </nav>
     </header>
 
+    <div class="content-grid">
+    <div class="column left">
     <!-- GUI Elements / Main Form -->
     <section aria-labelledby="gui-title">
       <h2 id="gui-title">GUI Elements</h2>
@@ -258,7 +267,8 @@
         </div>
 
         <label for="date1">Date Picker 1 (mm/dd/yyyy):</label>
-        <input id="date1" name="date1" type="text" placeholder="mm/dd/yyyy" />
+        <input id="date1" name="date1" type="text" placeholder="mm/dd/yyyy" aria-describedby="date1-help" />
+        <span id="date1-help" class="help">Format: mm/dd/yyyy</span>
 
         <label for="date2">Date Picker 2 (dd/mm/yyyy):</label>
         <div style="position:relative;">
@@ -269,9 +279,9 @@
 
         <label>Date Picker 3: (Select a Date Range)</label>
         <div class="inline-group" style="gap:8px;">
-          <input id="range-start" type="text" placeholder="mm/dd/yyyy" />
+          <input id="range-start" type="text" placeholder="mm/dd/yyyy" aria-label="Range start (mm/dd/yyyy)" />
           <span>to</span>
-          <input id="range-end" type="text" placeholder="mm/dd/yyyy" />
+          <input id="range-end" type="text" placeholder="mm/dd/yyyy" aria-label="Range end (mm/dd/yyyy)" />
         </div>
       </div>
       <div class="actions">
@@ -311,14 +321,31 @@
       </table>
     </section>
 
-    <!-- Dynamic Web Table (summary-like metrics) -->
+    <!-- Dynamic Web Table -->
     <section aria-labelledby="dynamic-table-title">
       <h2 id="dynamic-table-title">Dynamic Web Table</h2>
-      <div class="form-grid" style="max-width:700px;">
-        <label>CPU load of Chrome process:</label><div>1.3%</div>
-        <label>Memory Size of Firefox process:</label><div>87.0 MB</div>
-        <label>Network speed of Chrome process:</label><div>0.7 Mbps</div>
-        <label>Disk space of Firefox process:</label><div>0.08 MB/s</div>
+      <table aria-label="Dynamic Metrics Table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>CPU (%)</th>
+            <th>Network (Mbps)</th>
+            <th>Disk (MB/s)</th>
+            <th>Memory (MB)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>System</td><td>2.8%</td><td>8.3 Mbps</td><td>0.37 MB/s</td><td>64.5 MB</td></tr>
+          <tr><td>Internet Explorer</td><td>3.1%</td><td>1.4 Mbps</td><td>0.43 MB/s</td><td>94.6 MB</td></tr>
+          <tr><td>Chrome</td><td>4.5%</td><td>7.5 Mbps</td><td>0.47 MB/s</td><td>45.3 MB</td></tr>
+          <tr><td>Firefox</td><td>7.6%</td><td>9.8 Mbps</td><td>0.37 MB/s</td><td>66.9 MB</td></tr>
+        </tbody>
+      </table>
+      <div class="note" style="margin-top:8px;">
+        CPU load of Chrome process: <span class="text-red">4.5%</span><br/>
+        Memory Size of Firefox process: <span class="text-blue">66.9 MB</span><br/>
+        Network speed of Chrome process: <span class="text-orange">7.5 Mbps</span><br/>
+        Disk space of Firefox process: <span class="text-purple">0.37 MB/s</span>
       </div>
     </section>
 
@@ -327,12 +354,16 @@
       <h2 id="pagination-title">Pagination Web Table</h2>
       <table id="paginated-table" aria-label="Products Table">
         <thead>
-          <tr><th>ID</th><th>Product</th><th>Price</th><th>Action</th></tr>
+          <tr><th>ID</th><th>Product</th><th>Price</th><th>Select</th></tr>
         </thead>
         <tbody></tbody>
       </table>
       <div class="pagination" id="pagination" aria-label="Pagination"></div>
     </section>
+
+    </div> <!-- /.column.left -->
+
+    <div class="column right">
 
     <!-- Tabs section intentionally removed as per requirement -->
     <!-- <section class="tabs section"> ... Removed ... </section> -->
@@ -493,6 +524,40 @@
       </div>
     </section>
 
+    <!-- Visitors -->
+    <section aria-labelledby="visitors-title">
+      <h2 id="visitors-title">Visitors</h2>
+      <div style="display:flex; gap:16px; align-items:flex-end; flex-wrap:wrap;">
+        <div aria-label="Visitors chart" role="img" style="border:1px solid #ddd; border-radius:6px; padding:8px; background:#fff;">
+          <svg viewBox="0 0 320 160" width="320" height="160" aria-label="Chart">
+            <rect x="0" y="0" width="320" height="160" fill="#fafafa" stroke="#e0e0e0" />
+            <g fill="#90caf9" stroke="#42a5f5">
+              <rect x="10" y="80" width="8" height="70" />
+              <rect x="26" y="60" width="8" height="90" />
+              <rect x="42" y="66" width="8" height="84" />
+              <rect x="58" y="72" width="8" height="78" />
+              <rect x="74" y="85" width="8" height="65" />
+              <rect x="90" y="100" width="8" height="50" />
+              <rect x="106" y="94" width="8" height="56" />
+              <rect x="122" y="70" width="8" height="80" />
+              <rect x="138" y="50" width="8" height="100" />
+              <rect x="154" y="68" width="8" height="82" />
+              <rect x="170" y="62" width="8" height="88" />
+              <rect x="186" y="76" width="8" height="74" />
+              <rect x="202" y="96" width="8" height="54" />
+              <rect x="218" y="104" width="8" height="46" />
+              <rect x="234" y="72" width="8" height="78" />
+              <rect x="250" y="64" width="8" height="86" />
+              <rect x="266" y="70" width="8" height="80" />
+              <rect x="282" y="88" width="8" height="62" />
+              <rect x="298" y="92" width="8" height="58" />
+            </g>
+          </svg>
+        </div>
+        <div style="font-size:28px; font-weight:700; color:#111;">5,900,026</div>
+      </div>
+    </section>
+
     <!-- Frames & Windows -->
     <section aria-labelledby="frames-title">
       <h2 id="frames-title">Frames &amp; Windows</h2>
@@ -518,6 +583,44 @@
       <p>Use arrow keys to move the box within the area.</p>
       <div class="kb-area" tabindex="0" aria-label="Keyboard controlled area">
         <div class="kb-box" id="kb-box" role="img" aria-label="Movable box"></div>
+      </div>
+    </section>
+
+    </div> <!-- /.column.right -->
+    </div> <!-- /.content-grid -->
+
+    <!-- Visitors -->
+    <section aria-labelledby="visitors-title">
+      <h2 id="visitors-title">Visitors</h2>
+      <div style="display:flex; gap:16px; align-items:flex-end; flex-wrap:wrap;">
+        <div aria-label="Visitors chart" role="img" style="border:1px solid #ddd; border-radius:6px; padding:8px; background:#fff;">
+          <svg viewBox="0 0 320 160" width="320" height="160" aria-label="Chart">
+            <rect x="0" y="0" width="320" height="160" fill="#fafafa" stroke="#e0e0e0" />
+            <!-- simple bars -->
+            <g fill="#90caf9" stroke="#42a5f5">
+              <rect x="10" y="80" width="8" height="70" />
+              <rect x="26" y="60" width="8" height="90" />
+              <rect x="42" y="66" width="8" height="84" />
+              <rect x="58" y="72" width="8" height="78" />
+              <rect x="74" y="85" width="8" height="65" />
+              <rect x="90" y="100" width="8" height="50" />
+              <rect x="106" y="94" width="8" height="56" />
+              <rect x="122" y="70" width="8" height="80" />
+              <rect x="138" y="50" width="8" height="100" />
+              <rect x="154" y="68" width="8" height="82" />
+              <rect x="170" y="62" width="8" height="88" />
+              <rect x="186" y="76" width="8" height="74" />
+              <rect x="202" y="96" width="8" height="54" />
+              <rect x="218" y="104" width="8" height="46" />
+              <rect x="234" y="72" width="8" height="78" />
+              <rect x="250" y="64" width="8" height="86" />
+              <rect x="266" y="70" width="8" height="80" />
+              <rect x="282" y="88" width="8" height="62" />
+              <rect x="298" y="92" width="8" height="58" />
+            </g>
+          </svg>
+        </div>
+        <div style="font-size:28px; font-weight:700; color:#111;">5,900,026</div>
       </div>
     </section>
 
@@ -578,6 +681,16 @@
       if (mm < 1 || mm > 12) return false;
       const daysInMonth = new Date(yyyy, mm, 0).getDate();
       return dd >= 1 && dd <= daysInMonth;
+    }
+
+    /* Date validation: mm/dd/yyyy */
+    function isValidMMDDYYYY(value) {
+      const m = /^([01]\d)\/([0-3]\d)\/(\d{4})$/.exec(value);
+      if (!m) return false;
+      const mm = parseInt(m[1], 10); const dd = parseInt(m[2], 10); const yyyy = parseInt(m[3], 10);
+      if (mm < 1 || mm > 12) return false;
+      const dim = new Date(yyyy, mm, 0).getDate();
+      return dd >= 1 && dd <= dim;
     }
 
     /* Simple calendar datepicker for dd/mm/yyyy */
@@ -644,6 +757,23 @@
       });
     })();
 
+    /* Date1 and range inputs: mm/dd/yyyy validation */
+    (function(){
+      const d1 = document.getElementById('date1');
+      const rs = document.getElementById('range-start');
+      const re = document.getElementById('range-end');
+      function wire(el){
+        if (!el) return;
+        el.addEventListener('input', () => {
+          const v = (el.value||'').trim();
+          if (v.length >= 8) {
+            el.style.borderColor = isValidMMDDYYYY(v) ? '#4caf50' : '#f44336';
+          } else el.style.borderColor = '#ccc';
+        });
+      }
+      wire(d1); wire(rs); wire(re);
+    })();
+
     /* Form submission and validations */
     (function(){
       const name = $('#name');
@@ -687,7 +817,12 @@
         {id:12, product:'Charger', price:'$1.99'},
         {id:13, product:'Case', price:'$2.49'},
         {id:14, product:'Dock', price:'$9.49'},
-        {id:15, product:'Adapter', price:'$0.99'}
+        {id:15, product:'Adapter', price:'$0.99'},
+        {id:16, product:'Camera', price:'$22.99'},
+        {id:17, product:'Printer', price:'$18.49'},
+        {id:18, product:'Router', price:'$13.59'},
+        {id:19, product:'SSD', price:'$29.99'},
+        {id:20, product:'USB Hub', price:'$6.29'}
       ];
       const pageSize = 5;
       const tbody = $('#paginated-table tbody');
@@ -700,7 +835,7 @@
         const slice = data.slice(start, start+pageSize);
         slice.forEach(row => {
           const tr = document.createElement('tr');
-          tr.innerHTML = `<td>${row.id}</td><td>${row.product}</td><td>${row.price}</td><td><a href=\"https://www.qsgsoft.com/\">Buy</a></td>`;
+          tr.innerHTML = `<td>${row.id}</td><td>${row.product}</td><td>${row.price}</td><td><input type=\"checkbox\" aria-label=\"Select ${row.product}\"/></td>`;
           tbody.appendChild(tr);
         });
         renderPagination();
@@ -754,7 +889,6 @@
       const btn = $('#dc-btn');
       function copy() { f2.value = f1.value; }
       btn.addEventListener('dblclick', copy);
-      btn.addEventListener('click', copy); // also copy on single click
     })();
 
     /* Drag & Drop */
