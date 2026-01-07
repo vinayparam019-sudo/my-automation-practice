@@ -134,8 +134,10 @@
 
     /* Pagination */
     .pagination { display: flex; gap: 6px; margin-top: 10px; }
-    .pagination .page { padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; background:#fafafa; }
-    .pagination .page.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
+    .pagination .page, .pagination .pagination-btn { padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; background:#fafafa; font-size: 14px; }
+    .pagination .page.active, .pagination .pagination-btn.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
+    .pagination-btn { padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; background:#fafafa; font-size: 14px; }
+    .pagination-btn.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
 
     /* Mouse Hover dropdown */
     .hover-wrapper { position: relative; display: inline-block; }
@@ -156,8 +158,13 @@
     .slider-wrap { max-width: 500px; display: flex; gap: 12px; align-items: center; }
     input[type="range"] { width: 100%; }
 
-    /* SVGs */
-    .svg-grid { display: flex; gap: 12px; flex-wrap: wrap; }
+    .wikipedia-search-form { margin-bottom: 12px; }
+    .wikipedia-searchtable { display: flex; gap: 8px; align-items: center; padding: 8px; background: #f9f9f9; border-radius: 4px; }
+    .wikipedia-icon { width: 20px; height: 20px; }
+    .wikipedia-search-bar { display: flex; gap: 4px; flex: 1; }
+    .wikipedia-input-box { flex: 1; }
+    .wikipedia-search-input { width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px; }
+    .wikipedia-search-button { padding: 6px 12px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; }
     .svg-item { width: 120px; height: 80px; border: 1px solid #ccc; border-radius: 6px; display: flex; align-items: center; justify-content: center; }
 
     /* Keyboard control */
@@ -165,7 +172,24 @@
     .kb-box { position: absolute; width: 40px; height: 40px; background: #c8e6c9; border: 1px solid #81c784; border-radius: 6px; left: 12px; top: 12px; }
 
     /* Labels and Links */
-    .label-links { display: grid; grid-template-columns: 1fr 2fr; gap: 16px; }
+    .label { display: inline-block; padding: 6px 10px; margin: 4px 6px 4px 0; background: #e3f2fd; color: #1565c0; border-radius: 4px; font-size: 12px; font-weight: 600; border: 1px solid #bbdefb; }
+    .label-links { display: block; margin: 10px 0; }
+    .label-links a { display: inline-block; margin-right: 16px; margin-bottom: 8px; }
+
+    /* Wikipedia Search Widget */
+    .wikipedia-search-main-container { }
+    .wikipedia-search-form { margin-bottom: 12px; }
+    .wikipedia-searchtable { display: flex; gap: 8px; align-items: center; padding: 8px; background: #f9f9f9; border-radius: 4px; border: 1px solid #e8e8e8; }
+    .wikipedia-icon { width: 20px; height: 20px; }
+    .wikipedia-search-bar { display: flex; gap: 4px; flex: 1; }
+    .wikipedia-input-box { flex: 1; }
+    .wikipedia-search-input { width: 100%; padding: 6px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; }
+    .wikipedia-search-button { padding: 6px 12px; background: #f0f0f0; border: 1px solid #ccc; border-radius: 4px; cursor: pointer; font-size: 13px; }
+    .wikipedia-search-button:hover { background: #e8e8e8; }
+    .wikipedia-search-results-header { margin-top: 8px; font-weight: 700; color: #222; }
+    .wikipedia-search-results { margin-top: 8px; max-height: 200px; overflow-y: auto; border: 1px solid #ddd; border-radius: 4px; background: #fff; }
+    .wikipedia-search-results a { display: block; padding: 8px; border-bottom: 1px solid #eee; }
+    .wikipedia-search-results a:last-child { border-bottom: none; }
 
     /* Footer */
     footer { padding: 16px 24px; color: #666; background: #fafafa; border-top: 1px solid #e0e0e0; }
@@ -366,9 +390,10 @@
     <!-- Pagination Web Table -->
     <section aria-labelledby="pagination-title">
       <h2 id="pagination-title">Pagination Web Table</h2>
-      <table id="paginated-table" aria-label="Products Table">
+      <input id="searchProductInput" type="text" placeholder="Search by name" style="margin-bottom: 10px; padding: 6px; width: 100%; border: 1px solid #ccc; border-radius: 4px;" />
+      <table id="productTable" aria-label="Products Table">
         <thead>
-          <tr><th>ID</th><th>Product</th><th>Price</th><th>Select</th></tr>
+          <tr><th>ID</th><th>Product Name</th><th>Price</th><th>Action</th></tr>
         </thead>
         <tbody></tbody>
       </table>
@@ -624,6 +649,29 @@
       </div>
     </section>
 
+    <!-- Labels And Links -->
+    <section aria-labelledby="labels-title">
+      <h2 id="labels-title">Labels And Links</h2>
+      
+      <h3>Mobile Labels</h3>
+      <div class="label-links">
+        <span class="label">Samsung</span><span class="label">Real Me</span><span class="label">Moto</span>
+      </div>
+
+      <h3 style="margin-top:18px;">Laptop Links</h3>
+      <div class="label-links">
+        <a href="https://www.apple.com/" target="_blank">Apple</a><a href="https://www.lenovo.com/" target="_blank">Lenovo</a><a href="https://www.dell.com/" target="_blank">Dell</a>
+      </div>
+
+      <h3 style="margin-top:18px;">Broken Links</h3>
+      <div class="label-links">
+        <a href="http://www.deadlinkcity.com/error-page.asp?e=400" target="_blank">Errorcode 400</a><a href="http://www.deadlinkcity.com/error-page.asp?e=401" target="_blank">Errorcode 401</a><br/>
+        <a href="http://www.deadlinkcity.com/error-page.asp?e=403" target="_blank">Errorcode 403</a><a href="http://www.deadlinkcity.com/error-page.asp?e=404" target="_blank">Errorcode 404</a><br/>
+        <a href="http://www.deadlinkcity.com/error-page.asp?e=408" target="_blank">Errorcode 408</a><a href="http://www.deadlinkcity.com/error-page.asp?e=500" target="_blank">Errorcode 500</a><br/>
+        <a href="http://www.deadlinkcity.com/error-page.asp?e=502" target="_blank">Errorcode 502</a><a href="http://www.deadlinkcity.com/error-page.asp?e=503" target="_blank">Errorcode 503</a>
+      </div>
+    </section>
+
     <!-- Frames & Windows -->
     <section aria-labelledby="frames-title">
       <h2 id="frames-title">Frames &amp; Windows</h2>
@@ -705,19 +753,20 @@
           a.href = 'https://www.qsgsoft.com/';
         }
       });
-    });
+
+        /* Sorted list transfer */
+        (function(){
+          const left = $('#sorted-left');
+          const right = $('#sorted-right');
+          $('#to-right').addEventListener('click', () => {
+            Array.from(left.selectedOptions).forEach(opt => right.appendChild(opt));
+          });
+          $('#to-left').addEventListener('click', () => {
+            Array.from(right.selectedOptions).forEach(opt => left.appendChild(opt));
+          });
+        })();
 
     /* Sorted list transfer */
-    (function(){
-      const left = $('#sorted-left');
-      const right = $('#sorted-right');
-      $('#to-right').addEventListener('click', () => {
-        Array.from(left.selectedOptions).forEach(opt => right.appendChild(opt));
-      });
-      $('#to-left').addEventListener('click', () => {
-        Array.from(right.selectedOptions).forEach(opt => left.appendChild(opt));
-      });
-    })();
 
     /* Date validation: dd/mm/yyyy */
     function isValidDDMMYYYY(value) {
@@ -821,6 +870,7 @@
     })();
 
     /* Form submission and validations */
+    /* Form submission and validations */
     (function(){
       const name = $('#name');
       const email = $('#email');
@@ -849,7 +899,7 @@
     /* Pagination table */
     (function(){
       const data = [
-        {id:1, product:'Smartphone', price:'$10.99'},
+       {id:1, product:'Smartphone', price:'$10.99'},
         {id:2, product:'Laptop', price:'$19.99'},
         {id:3, product:'Tablet', price:'$5.99'},
         {id:4, product:'Smartwatch', price:'$7.99'},
@@ -871,35 +921,98 @@
         {id:20, product:'USB Hub', price:'$6.29'}
       ];
       const pageSize = 5;
-      const tbody = $('#paginated-table tbody');
+      const table = $('#productTable');
+      const tbody = table ? table.querySelector('tbody') : null;
       const pag = $('#pagination');
+      const searchInput = $('#searchProductInput');
       let page = 1;
+      let filteredData = data;
 
       function renderPage(p) {
+        if (!tbody) return;
         tbody.innerHTML = '';
         const start = (p-1)*pageSize;
-        const slice = data.slice(start, start+pageSize);
+        const slice = filteredData.slice(start, start+pageSize);
         slice.forEach(row => {
           const tr = document.createElement('tr');
-          tr.innerHTML = `<td>${row.id}</td><td>${row.product}</td><td>${row.price}</td><td><input type=\"checkbox\" aria-label=\"Select ${row.product}\"/></td>`;
+          tr.innerHTML = `<td>${row.id}</td><td>${row.product}</td><td>${row.price}</td><td><a href="#" onclick="alert('Action for ${row.product}'); return false;">Action</a></td>`;
           tbody.appendChild(tr);
         });
         renderPagination();
       }
       function renderPagination() {
+        if (!pag) return;
         pag.innerHTML = '';
-        const totalPages = Math.ceil(data.length / pageSize);
+        const totalPages = Math.ceil(filteredData.length / pageSize);
         for (let i=1;i<=totalPages;i++) {
-          const span = document.createElement('span');
-          span.className = 'page' + (i===page ? ' active' : '');
-          span.textContent = String(i);
-          span.setAttribute('role', 'button');
-          span.setAttribute('aria-label', 'Page ' + i);
-          span.addEventListener('click', () => { page = i; renderPage(page); });
-          pag.appendChild(span);
+          const btn = document.createElement('button');
+          btn.className = 'pagination-btn' + (i===page ? ' active' : '');
+          btn.textContent = String(i);
+          btn.setAttribute('aria-label', 'Page ' + i);
+          btn.addEventListener('click', (e) => { e.preventDefault(); page = i; renderPage(page); });
+          pag.appendChild(btn);
         }
       }
+      
+      searchInput.addEventListener('keyup', (e) => {
+        if (!searchInput) return;
+        const searchTerm = (searchInput.value || '').toLowerCase();
+        filteredData = data.filter(item => item.product.toLowerCase().includes(searchTerm));
+        page = 1;
+        renderPage(page);
+      });
+      
       renderPage(page);
+    })();
+
+      /* Wikipedia Search Widget */
+    (function(){
+      const form = $('#Wikipedia1_wikipedia-search-form');
+      const input = $('#Wikipedia1_wikipedia-search-input');
+      const resultsDiv = $('#Wikipedia1_wikipedia-search-results');
+      
+      // Sample Wikipedia-like data
+      const wikiPages = [
+        { title: 'Playwright (software)', url: 'https://wikipedia.org/wiki/Playwright_(software)' },
+        { title: 'Web automation', url: 'https://wikipedia.org/wiki/Web_automation' },
+        { title: 'Quality assurance', url: 'https://wikipedia.org/wiki/Quality_assurance' },
+        { title: 'Software testing', url: 'https://wikipedia.org/wiki/Software_testing' },
+        { title: 'Automation', url: 'https://wikipedia.org/wiki/Automation' },
+        { title: 'Testing software', url: 'https://wikipedia.org/wiki/Testing_software' },
+        { title: 'Selenium (software)', url: 'https://wikipedia.org/wiki/Selenium_(software)' },
+        { title: 'API testing', url: 'https://wikipedia.org/wiki/API_testing' }
+      ];
+      
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const query = (input.value || '').trim().toLowerCase();
+        if (!query) {
+          resultsDiv.innerHTML = '';
+          return;
+        }
+        
+        resultsDiv.innerHTML = '';
+        const matches = wikiPages.filter(p => p.title.toLowerCase().includes(query));
+        
+        if (matches.length === 0) {
+          resultsDiv.innerHTML = '<div style="padding: 8px; color: #666;">No results found.</div>';
+          return;
+        }
+        
+        matches.forEach(page => {
+          const a = document.createElement('a');
+          a.href = page.url;
+          a.target = '_blank';
+          a.textContent = page.title;
+          resultsDiv.appendChild(a);
+        });
+      });
+      
+      input.addEventListener('keyup', (e) => {
+        if (e.key === 'Enter') {
+          form.dispatchEvent(new Event('submit'));
+        }
+      });
     })();
 
     /* Dynamic Button: enable delayed button after 2s */
@@ -996,6 +1109,18 @@
         box.style.left = x + 'px'; box.style.top = y + 'px';
       });
     })();
+
+    /* Toggle START/STOP button */
+    function toggleButton(btn) {
+      if (btn.textContent === 'START') {
+        btn.textContent = 'STOP';
+        btn.classList.add('stop');
+      } else {
+        btn.textContent = 'START';
+        btn.classList.remove('stop');
+      }
+    }
+    });
   </script>
 </body>
 </html>
