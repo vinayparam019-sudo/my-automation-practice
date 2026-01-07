@@ -191,6 +191,16 @@
     .wikipedia-search-results a { display: block; padding: 8px; border-bottom: 1px solid #eee; }
     .wikipedia-search-results a:last-child { border-bottom: none; }
 
+    /* Form Section */
+    .title { font-size: 18px; font-weight: bold; margin: 16px 0; }
+    .container { display: flex; flex-direction: column; gap: 16px; }
+    .section { border: 1px solid #ddd; padding: 12px; border-radius: 4px; }
+    .section h4 { margin: 0 0 8px 0; }
+    .section p { margin: 4px 0 8px 0; }
+    .input-field { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+    .rectangular-button { padding: 8px 16px; background-color: #2196F3; color: white; border: none; border-radius: 4px; cursor: pointer; }
+    .rectangular-button:hover { background-color: #1976D2; }
+
     /* Footer */
     footer { padding: 16px 24px; color: #666; background: #fafafa; border-top: 1px solid #e0e0e0; }
     footer a { color: #666; }
@@ -393,7 +403,7 @@
       <input id="searchProductInput" type="text" placeholder="Search by name" style="margin-bottom: 10px; padding: 6px; width: 100%; border: 1px solid #ccc; border-radius: 4px;" />
       <table id="productTable" aria-label="Products Table">
         <thead>
-          <tr><th>ID</th><th>Product Name</th><th>Price</th><th>Action</th></tr>
+          <tr><th>ID</th><th>Name</th><th>Price</th><th>Select</th></tr>
         </thead>
         <tbody></tbody>
       </table>
@@ -605,8 +615,43 @@
       </div>
     </section>
 
+    <!-- ShadowDOM -->
+    <section aria-labelledby="shadowdom-title">
+      <h2 id="shadowdom-title">ShadowDOM</h2>
+      <div id="non_host"></div>
+      <div id="shadow_host"></div>
+    </section>
+
     </div> <!-- /.column.right -->
     </div> <!-- /.content-grid -->
+
+    <!-- Form Section (Footer) -->
+    <div style="display: flex; gap: 20px; flex-wrap: wrap; margin-top: 40px;">
+      <!-- Form Section -->
+      <div style="flex: 1; min-width: 300px;">
+        <h2 class="title">Form</h2>
+        <div class="container">
+          <div id="section1" class="section">
+            <h4>Section 1</h4>
+            <p id="para1">This is a paragraph in Section 1.</p>
+            <input type="text" name="input1" id="input1" class="input-field">
+            <button id="btn1" class="rectangular-button">Submit</button>
+          </div>
+          <div id="section2" class="section">
+            <h4>Section 2</h4>
+            <p id="para2">This is a paragraph in Section 2.</p>
+            <input type="text" name="input2" id="input2" class="input-field">
+            <button id="btn2" class="rectangular-button">Submit</button>
+          </div>
+          <div id="section3" class="section">
+            <h4>Section 3</h4>
+            <p id="para3">This is a paragraph in Section 3.</p>
+            <input type="text" name="input3" id="input3" class="input-field">
+            <button id="btn3" class="rectangular-button">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
     <!-- Footer -->
     <footer>
@@ -642,6 +687,7 @@
 
     /* Link replacement safety: redirect nav links to qsgsoft, but preserve specific links */
     document.addEventListener('DOMContentLoaded', () => {
+      console.log('DEBUG: DOMContentLoaded fired');
       const preserveUrls = [
         'apple.com',
         'lenovo.com',
@@ -658,8 +704,10 @@
           a.href = 'https://www.qsgsoft.com/';
         }
       });
+      console.log('DEBUG: After preserveUrls processing');
 
         /* Sorted list transfer */
+        console.log('DEBUG: Before sorted list IIFE');
         (function(){
           const left = $('#sorted-left');
           const right = $('#sorted-right');
@@ -670,10 +718,12 @@
             Array.from(right.selectedOptions).forEach(opt => left.appendChild(opt));
           });
         })();
+        console.log('DEBUG: After sorted list IIFE');
 
     /* Sorted list transfer */
 
     /* Date validation: dd/mm/yyyy */
+    console.log('DEBUG: Before date validation functions');
     function isValidDDMMYYYY(value) {
       const m = /^([0-3]\d)\/([01]\d)\/(\d{4})$/.exec(value);
       if (!m) return false;
@@ -694,7 +744,9 @@
     }
 
     /* Simple calendar datepicker for dd/mm/yyyy */
+    console.log('DEBUG: Before datepicker IIFE');
     (function(){
+      try {
       const input = $('#date2');
       const pop = $('#date2-pop');
       let current = new Date();
@@ -755,7 +807,11 @@
           input.style.borderColor = '#ccc';
         }
       });
+      } catch(e) {
+        console.error('Datepicker initialization error:', e);
+      }
     })();
+    console.log('DEBUG: After datepicker IIFE');
 
     /* Date1 and range inputs: mm/dd/yyyy validation */
     (function(){
@@ -776,6 +832,7 @@
 
     /* Form submission and validations */
     /* Form submission and validations */
+    console.log('DEBUG: Before form validation IIFE');
     (function(){
       const name = $('#name');
       const email = $('#email');
@@ -801,52 +858,60 @@
       });
     })();
 
-    /* Pagination table */
-    (function(){
+    // Pagination table - inside DOMContentLoaded
+    (() => {
+      console.log('DEBUG: Pagination IIFE starting');
       const data = [
-       {id:1, product:'Smartphone', price:'$10.99'},
-        {id:2, product:'Laptop', price:'$19.99'},
-        {id:3, product:'Tablet', price:'$5.99'},
-        {id:4, product:'Smartwatch', price:'$7.99'},
-        {id:5, product:'Wireless Earbuds', price:'$8.99'},
-        {id:6, product:'Monitor', price:'$12.49'},
-        {id:7, product:'Keyboard', price:'$3.99'},
-        {id:8, product:'Mouse', price:'$2.99'},
-        {id:9, product:'Webcam', price:'$6.99'},
-        {id:10, product:'Microphone', price:'$4.99'},
-        {id:11, product:'Speaker', price:'$11.99'},
-        {id:12, product:'Charger', price:'$1.99'},
-        {id:13, product:'Case', price:'$2.49'},
-        {id:14, product:'Dock', price:'$9.49'},
-        {id:15, product:'Adapter', price:'$0.99'},
-        {id:16, product:'Camera', price:'$22.99'},
-        {id:17, product:'Printer', price:'$18.49'},
-        {id:18, product:'Router', price:'$13.59'},
-        {id:19, product:'SSD', price:'$29.99'},
-        {id:20, product:'USB Hub', price:'$6.29'}
+        {id:1, name:'Laptop 1', price:'$15.99'},
+        {id:2, name:'Laptop 2', price:'$25.99'},
+        {id:3, name:'Laptop 3', price:'$35.99'},
+        {id:4, name:'Laptop 4', price:'$45.99'},
+        {id:5, name:'Laptop 5', price:'$55.99'},
+        {id:6, name:'Laptop 6', price:'$65.99'},
+        {id:7, name:'Laptop 7', price:'$75.99'},
+        {id:8, name:'Laptop 8', price:'$85.99'},
+        {id:9, name:'Laptop 9', price:'$95.99'},
+        {id:10, name:'Laptop 10', price:'$105.99'},
+        {id:11, name:'Smart Home Hub', price:'$20.99'},
+        {id:12, name:'Router', price:'$24.99'},
+        {id:13, name:'Portable Charger', price:'$30.99'},
+        {id:14, name:'Fitness Tracker', price:'$19.99'},
+        {id:15, name:'Desktop Computer', price:'$2.99'},
+        {id:16, name:'Gaming Monitor', price:'$299.99'},
+        {id:17, name:'Wireless Mouse', price:'$29.99'},
+        {id:18, name:'Mechanical Keyboard', price:'$79.99'},
+        {id:19, name:'USB-C Hub', price:'$49.99'},
+        {id:20, name:'Monitor Light', price:'$69.99'}
       ];
       const pageSize = 5;
-      const table = $('#productTable');
+      const table = document.getElementById('productTable');
       const tbody = table ? table.querySelector('tbody') : null;
-      const pag = $('#pagination');
-      const searchInput = $('#searchProductInput');
+      const pag = document.getElementById('pagination');
+      const searchInput = document.getElementById('searchProductInput');
       let page = 1;
       let filteredData = data;
 
       function renderPage(p) {
-        if (!tbody) return;
+        if (!tbody) {
+          console.error('tbody not found');
+          return;
+        }
         tbody.innerHTML = '';
         const start = (p-1)*pageSize;
         const slice = filteredData.slice(start, start+pageSize);
         slice.forEach(row => {
           const tr = document.createElement('tr');
-          tr.innerHTML = `<td>${row.id}</td><td>${row.product}</td><td>${row.price}</td><td><a href="#" onclick="alert('Action for ${row.product}'); return false;">Action</a></td>`;
+          const checkbox = `<input type="checkbox" aria-label="Select ${row.name}" />`;
+          tr.innerHTML = `<td>${row.id}</td><td>${row.name}</td><td>${row.price}</td><td>${checkbox}</td>`;
           tbody.appendChild(tr);
         });
         renderPagination();
       }
       function renderPagination() {
-        if (!pag) return;
+        if (!pag) {
+          console.error('pagination div not found');
+          return;
+        }
         pag.innerHTML = '';
         const totalPages = Math.ceil(filteredData.length / pageSize);
         for (let i=1;i<=totalPages;i++) {
@@ -859,15 +924,21 @@
         }
       }
       
-      searchInput.addEventListener('keyup', (e) => {
-        if (!searchInput) return;
-        const searchTerm = (searchInput.value || '').toLowerCase();
-        filteredData = data.filter(item => item.product.toLowerCase().includes(searchTerm));
-        page = 1;
-        renderPage(page);
-      });
+      if (searchInput) {
+        searchInput.addEventListener('keyup', (e) => {
+          const searchTerm = (searchInput.value || '').toLowerCase();
+          filteredData = data.filter(item => item.name.toLowerCase().includes(searchTerm));
+          page = 1;
+          renderPage(page);
+        });
+      }
       
-      renderPage(page);
+      if (table && tbody && pag) {
+        console.log('DEBUG: All elements found, calling renderPage');
+        renderPage(page);
+      } else {
+        console.error('Missing elements: table=' + !!table + ' tbody=' + !!tbody + ' pag=' + !!pag);
+      }
     })();
 
       /* Wikipedia Search Widget */
@@ -875,6 +946,8 @@
       const form = $('#Wikipedia1_wikipedia-search-form');
       const input = $('#Wikipedia1_wikipedia-search-input');
       const resultsDiv = $('#Wikipedia1_wikipedia-search-results');
+      
+      if (!form || !input || !resultsDiv) return;
       
       // Sample Wikipedia-like data
       const wikiPages = [
@@ -925,11 +998,17 @@
       const start = $('#start-btn');
       const status = $('#start-status');
       const target = $('#delayed-btn');
-      start.addEventListener('click', () => {
-        status.textContent = 'Enabling in 2 seconds...';
-        target.disabled = true;
-        setTimeout(() => { target.disabled = false; status.textContent = 'Target Button enabled.'; }, 2000);
-      });
+      
+      if (start) {
+        start.addEventListener('click', () => {
+          if (status) status.textContent = 'Enabling in 2 seconds...';
+          if (target) target.disabled = true;
+          setTimeout(() => { 
+            if (target) target.disabled = false; 
+            if (status) status.textContent = 'Target Button enabled.'; 
+          }, 2000);
+        });
+      }
     })();
 
     /* Alerts & Popups */
@@ -1025,7 +1104,57 @@
         btn.classList.remove('stop');
       }
     }
-    });
+
+    /* Shadow DOM initialization */
+    (function(){
+      const shadowHost = document.getElementById('shadow_host');
+      if (shadowHost) {
+        let shadowRoot = shadowHost.attachShadow({ mode: 'open' });
+        shadowRoot.innerHTML = `
+          <style>
+            .wrapper { display: block; margin: 8px 0; }
+            .info { font-weight: bold; }
+            a { color: #0066cc; text-decoration: none; }
+            a:hover { text-decoration: underline; }
+            input { margin: 4px 0; display: block; }
+          </style>
+          <span class="wrapper" id="shadow_content"><span class="info">Mobiles</span><br></span>
+          <div id="nested_shadow_host"></div>
+          <a href="https://www.pavantestingtools.com/" target="_blank">Blog</a><br>
+          <a href="https://www.youtube.com/" target="_blank">Youtube</a><br>
+          <input type="text" placeholder="Text input" /><br>
+          <input type="checkbox" /> Checkbox<br>
+          <input type="file" /><br>
+        `;
+        
+        const nestedHost = shadowRoot.getElementById('nested_shadow_host');
+        if (nestedHost) {
+          let nestedShadowRoot = nestedHost.attachShadow({ mode: 'open' });
+          nestedShadowRoot.innerHTML = `
+            <style>
+              #nested_shadow_content { display: block; margin: 8px 0; font-weight: bold; }
+            </style>
+            <div id="nested_shadow_content"><div>Laptops</div><br></div>
+          `;
+        }
+      }
+    })();
+
+    /* Form section button handlers */
+    (function(){
+      const buttons = ['btn1', 'btn2', 'btn3'];
+      buttons.forEach(btnId => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+          btn.addEventListener('click', () => {
+            const sectionNum = btnId.charAt(btnId.length - 1);
+            const input = document.getElementById('input' + sectionNum);
+            alert('Button ' + sectionNum + ' clicked. Input value: ' + (input ? input.value : 'N/A'));
+          });
+        }
+      });
+    })();
+    }); // end DOMContentLoaded
   </script>
 </body>
 </html>
