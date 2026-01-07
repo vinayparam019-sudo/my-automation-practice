@@ -638,25 +638,43 @@
     <!-- Scrolling Dropdown -->
     <section aria-labelledby="scroll-dd-title">
       <h2 id="scroll-dd-title">Scrolling DropDown</h2>
-      <label for="long-dd">Choose an option:</label>
-      <select id="long-dd" size="8" style="max-width:100%;">
-        <option>Item 1</option>
-        <option selected>Item 2</option>
-        <option>Item 3</option>
-        <option>Item 4</option>
-        <option>Item 5</option>
-        <option>Item 6</option>
-        <option>Item 7</option>
-        <option>Item 8</option>
-        <option>Item 9</option>
-        <option>Item 10</option>
-        <option>Item 11</option>
-        <option>Item 12</option>
-        <option>Item 13</option>
-        <option>Item 14</option>
-        <option>Item 15</option>
-        <option>Item 16</option>
-      </select>
+      <style>
+        /* Style for the combo box */
+        #comboBox {
+          width: 200px;
+          height: 30px;
+          padding: 5px;
+          border: 1px solid #ccc;
+          border-radius: 4px;
+          font-size: 14px;
+        }
+
+        /* Style for the dropdown options */
+        #dropdown {
+          width: 220px;
+          max-height: 150px;
+          overflow-y: auto;
+          border: 1px solid #ccc;
+          display: none;
+          position: absolute;
+          background-color: white;
+          z-index: 999;
+          border-radius: 4px;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.12);
+        }
+
+        .option {
+          padding: 10px;
+          cursor: pointer;
+        }
+
+        .option:hover {
+          background-color: #f0f0f0;
+        }
+      </style>
+
+      <input type="text" id="comboBox" placeholder="Select an item" autocomplete="off">
+      <div id="dropdown"></div>
     </section>
 
     <!-- Visitors Count -->
@@ -747,19 +765,8 @@
 
     <!-- Footer -->
     <footer>
-      <div style="display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;">
-        <div>
-          Theme images by <a href="https://www.qsgsoft.com/">merrymoonmary</a>. Powered by <a href="https://www.qsgsoft.com/">Blogger</a>.
-        </div>
-        <div>
-          <a href="https://www.qsgsoft.com/">Home</a>
-          &nbsp;|&nbsp;
-          <a href="https://www.qsgsoft.com/">Hidden Elements &amp; AJAX</a>
-          &nbsp;|&nbsp;
-          <a href="https://www.qsgsoft.com/">Download Files</a>
-          &nbsp;|&nbsp;
-          <a href="https://www.qsgsoft.com/">ShadowDOM</a>
-          &nbsp;|&nbsp;
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+        <div style="text-align:center; flex:1;">
           <a href="https://www.qsgsoft.com/">Mobiles</a>
           &nbsp;|&nbsp;
           <a href="https://www.qsgsoft.com/">Laptops</a>
@@ -767,6 +774,13 @@
           <a href="https://www.qsgsoft.com/">Blog</a>
           &nbsp;|&nbsp;
           <a href="https://www.qsgsoft.com/">Youtube</a>
+        </div>
+        <div style="text-align:right; font-size:12px; color:#888;">
+          <p style="margin:2px 0;">Author: Vinay VP</p>
+          <address style="font-style:normal; margin:2px 0;">
+            email: <a href="mailto:vinay.vp@qsgsoft.com" style="color:#888;">vinay.vp@qsgsoft.com</a>
+          </address>
+          <p style="margin:2px 0;">&copy; 2026 All Rights Reserved.</p>
         </div>
       </div>
     </footer>
@@ -1246,6 +1260,109 @@
             alert('Button ' + sectionNum + ' clicked. Input value: ' + (input ? input.value : 'N/A'));
           });
         }
+      });
+    })();
+
+    /* Scrolling Dropdown with Infinite Scroll */
+    (function() {
+      const comboBox = document.getElementById('comboBox');
+      const dropdown = document.getElementById('dropdown');
+      if (!comboBox || !dropdown) return;
+
+      const totalItems = 1000; // Total number of items
+      let currentIndex = 0; // Current index of items loaded
+      const itemsPerLoad = 20; // Number of items to load per scroll
+      let isLoading = false; // Flag to prevent multiple simultaneous loads
+
+      // Generate items array
+      const items = [];
+      for (let i = 1; i <= totalItems; i++) {
+        items.push('Item ' + i);
+      }
+
+      // Function to populate dropdown with items
+      function populateDropdown(start, count) {
+        const fragment = document.createDocumentFragment();
+        const end = Math.min(start + count, totalItems);
+        
+        for (let i = start; i < end; i++) {
+          const option = document.createElement('div');
+          option.className = 'option';
+          option.textContent = items[i];
+          option.addEventListener('click', function() {
+            comboBox.value = this.textContent;
+            dropdown.style.display = 'none';
+          });
+          fragment.appendChild(option);
+        }
+        
+        dropdown.appendChild(fragment);
+        currentIndex = end;
+      }
+
+      // Load more items on scroll
+      function loadMoreItems() {
+        if (isLoading || currentIndex >= totalItems) return;
+        
+        const scrollTop = dropdown.scrollTop;
+        const scrollHeight = dropdown.scrollHeight;
+        const clientHeight = dropdown.clientHeight;
+        
+        // Check if scrolled near bottom (within 50px)
+        if (scrollTop + clientHeight >= scrollHeight - 50) {
+          isLoading = true;
+          
+          // Simulate loading delay
+          setTimeout(function() {
+            populateDropdown(currentIndex, itemsPerLoad);
+            isLoading = false;
+          }, 500);
+        }
+      }
+
+      // Show dropdown on focus and load initial items
+      comboBox.addEventListener('focus', function() {
+        if (currentIndex === 0) {
+          populateDropdown(0, 100); // Load first 100 items initially
+        }
+        dropdown.style.display = 'block';
+      });
+
+      // Hide dropdown when clicking outside
+      document.addEventListener('click', function(event) {
+        if (event.target !== comboBox && event.target !== dropdown && !dropdown.contains(event.target)) {
+          dropdown.style.display = 'none';
+        }
+      });
+
+      // Load more items on scroll
+      dropdown.addEventListener('scroll', loadMoreItems);
+
+      // Filter items based on input
+      comboBox.addEventListener('input', function() {
+        const filter = this.value.toLowerCase();
+        dropdown.innerHTML = ''; // Clear dropdown
+        currentIndex = 0;
+        
+        if (filter === '') {
+          populateDropdown(0, 100);
+        } else {
+          const fragment = document.createDocumentFragment();
+          items.forEach(function(item) {
+            if (item.toLowerCase().indexOf(filter) > -1) {
+              const option = document.createElement('div');
+              option.className = 'option';
+              option.textContent = item;
+              option.addEventListener('click', function() {
+                comboBox.value = this.textContent;
+                dropdown.style.display = 'none';
+              });
+              fragment.appendChild(option);
+            }
+          });
+          dropdown.appendChild(fragment);
+        }
+        dropdown.style.display = 'block';
       });
     })();
     }); // end DOMContentLoaded
