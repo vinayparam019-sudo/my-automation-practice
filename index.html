@@ -186,10 +186,11 @@
       <p class="subtitle">For Selenium, Cypress &amp; Playwright</p>
       <nav class="top-nav" aria-label="Primary">
         <a href="https://www.qsgsoft.com/" aria-label="Home">Home</a>
-        <a href="https://www.qsgsoft.com/" aria-label="Udemy Courses">Udemy Courses</a>
-        <a href="https://www.qsgsoft.com/" aria-label="Online Trainings">Online Trainings</a>
-        <a href="https://www.qsgsoft.com/" aria-label="Blog">Blog</a>
-        <a href="https://www.qsgsoft.com/" aria-label="Playwright Practice">PlaywrightPractice</a>
+        <a href="https://www.qsgsoft.com/about-us/" aria-label="About us">About us</a>
+        <a href="https://playwright.dev/docs/intro" aria-label="Playwright">Playwright</a>
+        <a href="https://opensource-demo.orangehrmlive.com/web/index.php/auth/login" aria-label="Demo-site">Demo-site</a>
+        <a href="https://www.qsgsoft.com/category/blog/" aria-label="Blog">Blog</a>
+        <a href="https://www.qsgsoft.com/contact/" aria-label="Contact us">Contact us</a>
       </nav>
     </header>
 
@@ -266,22 +267,17 @@
           <select id="sorted-right" size="6" style="min-width:160px;"></select>
         </div>
 
-        <label for="date1">Date Picker 1 (mm/dd/yyyy):</label>
-        <input id="date1" name="date1" type="text" placeholder="mm/dd/yyyy" aria-describedby="date1-help" />
-        <span id="date1-help" class="help">Format: mm/dd/yyyy</span>
+        <label for="datepicker">Date Picker 1 (mm/dd/yyyy):</label>
+        <input id="datepicker" name="datepicker" type="text" placeholder="mm/dd/yyyy" />
 
-        <label for="date2">Date Picker 2 (dd/mm/yyyy):</label>
-        <div style="position:relative;">
-          <input id="date2" name="date2" type="text" placeholder="dd/mm/yyyy" aria-describedby="date2-help" />
-          <div id="date2-pop" class="datepicker-pop hidden" role="dialog" aria-modal="false" aria-label="Date picker"></div>
-          <span id="date2-help" class="help">Format: dd/mm/yyyy</span>
-        </div>
+        <label for="txtDate">Date Picker 2 (dd/mm/yyyy):</label>
+        <input id="txtDate" name="SelectedDate" type="text" placeholder="dd/mm/yyyy" readonly="readonly" />
 
         <label>Date Picker 3: (Select a Date Range)</label>
         <div class="inline-group" style="gap:8px;">
-          <input id="range-start" type="text" placeholder="mm/dd/yyyy" aria-label="Range start (mm/dd/yyyy)" />
+          <input id="start-date" type="text" placeholder="mm/dd/yyyy" />
           <span>to</span>
-          <input id="range-end" type="text" placeholder="mm/dd/yyyy" aria-label="Range end (mm/dd/yyyy)" />
+          <input id="end-date" type="text" placeholder="mm/dd/yyyy" />
         </div>
       </div>
       <div class="actions">
@@ -290,6 +286,24 @@
         <div id="form-result" class="note" aria-live="polite" style="margin-top:8px;"></div>
       </div>
     </section>
+    
+    <!-- jQuery UI Datepicker Libraries -->
+    <link href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.js"></script>
+    <script>
+      $(function() {
+        $("#datepicker").datepicker();
+        $("#txtDate").datepicker({
+          changeMonth: true,
+          changeYear: true,
+          dateFormat: 'dd/mm/yy',
+          showOn: 'focus'
+        });
+        $("#start-date").datepicker({ dateFormat: 'mm/dd/yy' });
+        $("#end-date").datepicker({ dateFormat: 'mm/dd/yy' });
+      });
+    </script>
 
     <!-- Upload Files -->
     <section aria-labelledby="upload-title">
@@ -365,19 +379,68 @@
 
     <div class="column right">
 
-    <!-- Tabs section intentionally removed as per requirement -->
-    <!-- <section class="tabs section"> ... Removed ... </section> -->
+    <!-- Tabs Section with Wikipedia Search -->
+    <section class="tabs section" aria-labelledby="tabs-title">
+      <h2 id="tabs-title">Tabs</h2>
+      <div class="wikipedia-search-main-container">
+        <form class="wikipedia-search-form" id="Wikipedia1_wikipedia-search-form" name="wikipedia">
+          <div class="wikipedia-searchtable">
+            <span>
+              <a class="wikipedia-search-wiki-link" href="https://wikipedia.org/wiki/" target="_blank">
+                <img align="top" class="wikipedia-icon" src="https://resources.blogblog.com/img/widgets/icon_wikipedia_w.png" alt="Wikipedia">
+              </a>
+            </span>
+            <span class="wikipedia-search-bar">
+              <span class="wikipedia-input-box">
+                <input class="wikipedia-search-input" id="Wikipedia1_wikipedia-search-input" type="text" placeholder="Search Wikipedia">
+              </span>
+              <span>
+                <input class="wikipedia-search-button" type="submit" value="Search">
+              </span>
+            </span>
+          </div>
+        </form>
+        <div class="wikipedia-search-results-header" id="Wikipedia1_wikipedia-search-results-header">Search results</div>
+        <div class="wikipedia-search-results" id="Wikipedia1_wikipedia-search-results"></div>
+      </div>
+    </section>
 
     <!-- Dynamic Button -->
     <section aria-labelledby="dynamic-btn-title">
       <h2 id="dynamic-btn-title">Dynamic Button</h2>
       <div class="inline-group">
-        <button id="start-btn" type="button">START</button>
-        <span id="start-status" class="note">Click to enable target button after delay.</span>
+        <button id="start-btn" name="start" class="start" type="button" onclick="toggleButton(this)">START</button>
       </div>
-      <div class="actions" style="margin-top:10px;">
-        <button id="delayed-btn" type="button" disabled>Target Button</button>
-      </div>
+      <style>
+        button.start {
+          padding: 10px 25px;
+          font-size: 16px;
+          border: none;
+          border-radius: 50px;
+          cursor: pointer;
+          color: black;
+          background-color: yellowgreen;
+          transition: background-color 0.3s ease;
+        }
+        button.stop {
+          background-color: red;
+        }
+      </style>
+      <script>
+        function toggleButton(button) {
+          if (button.innerHTML === "START") {
+            button.innerHTML = "STOP";
+            button.setAttribute("name", "stop");
+            button.classList.remove("start");
+            button.classList.add("stop");
+          } else {
+            button.innerHTML = "START";
+            button.setAttribute("name", "start");
+            button.classList.remove("stop");
+            button.classList.add("start");
+          }
+        }
+      </script>
     </section>
 
     <!-- Alerts & Popups -->
@@ -497,29 +560,29 @@
     <!-- Labels and Links -->
     <section aria-labelledby="labels-links-title">
       <h2 id="labels-links-title">Labels And Links</h2>
-      <div class="label-links">
-        <div>
-          <h3>Mobile Labels</h3>
-          <p>Samsung<br/>Real Me<br/>Moto</p>
+      <div class="container">
+        <div id="mobiles" class="mobiles">
+          <h4>Mobile Labels</h4>
+          <label id="samsung">Samsung</label>
+          <label id="realme">Real Me</label>
+          <label id="moto">Moto</label>
         </div>
-        <div>
-          <h3>Laptop Links</h3>
-          <p>
-            <a href="https://www.qsgsoft.com/">Apple</a>
-            <a href="https://www.qsgsoft.com/">Lenovo</a>
-            <a href="https://www.qsgsoft.com/">Dell</a>
-          </p>
-          <h3>Broken Links</h3>
-          <p>
-            <a href="https://www.qsgsoft.com/">Errorcode 400</a>
-            <a href="https://www.qsgsoft.com/">Errorcode 401</a>
-            <a href="https://www.qsgsoft.com/">Errorcode 403</a>
-            <a href="https://www.qsgsoft.com/">Errorcode 404</a>
-            <a href="https://www.qsgsoft.com/">Errorcode 408</a>
-            <a href="https://www.qsgsoft.com/">Errorcode 500</a>
-            <a href="https://www.qsgsoft.com/">Errorcode 502</a>
-            <a href="https://www.qsgsoft.com/">Errorcode 503</a>
-          </p>
+        <div id="laptops" class="laptops">
+          <h4>Laptop Links</h4>
+          <a href="https://www.apple.com/" id="apple" class="link">Apple</a>
+          <a href="https://www.lenovo.com/" id="lenovo" class="link">Lenovo</a>
+          <a href="https://www.dell.com/" id="dell" class="link">Dell</a>
+        </div>
+        <div id="broken-links" class="laptops">
+          <h4>Broken Links</h4>
+          <a href="http://www.deadlinkcity.com/error-page.asp?e=400" class="link">Errorcode 400</a>
+          <a href="http://www.deadlinkcity.com/error-page.asp?e=401" class="link">Errorcode 401</a>
+          <a href="http://www.deadlinkcity.com/error-page.asp?e=403" class="link">Errorcode 403</a>
+          <a href="http://www.deadlinkcity.com/error-page.asp?e=404" class="link">Errorcode 404</a>
+          <a href="http://www.deadlinkcity.com/error-page.asp?e=408" class="link">Errorcode 408</a>
+          <a href="http://www.deadlinkcity.com/error-page.asp?e=500" class="link">Errorcode 500</a>
+          <a href="http://www.deadlinkcity.com/error-page.asp?e=502" class="link">Errorcode 502</a>
+          <a href="http://www.deadlinkcity.com/error-page.asp?e=503" class="link">Errorcode 503</a>
         </div>
       </div>
     </section>
