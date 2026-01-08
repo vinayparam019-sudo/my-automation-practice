@@ -247,13 +247,13 @@
       <h2 id="gui-title">GUI Elements</h2>
       <div class="form-grid" id="main-form" role="form" aria-label="Automation Form">
         <label for="name">Name:</label>
-        <input id="name" name="name" type="text" aria-required="true" placeholder="Enter your name" />
+        <input class="form-control" id="name" name="name" maxlength="15" placeholder="Enter Name" required type="text" />
 
         <label for="email">Email:</label>
-        <input id="email" name="email" type="email" placeholder="name@example.com" />
+        <input class="form-control" id="email" name="email" maxlength="25" placeholder="Enter EMail" type="email" />
 
         <label for="phone">Phone:</label>
-        <input id="phone" name="phone" type="text" placeholder="Optional" />
+        <input class="form-control" id="phone" name="phone" maxlength="10" placeholder="Enter Phone" type="text" />
 
         <label for="address">Address:</label>
         <textarea id="address" name="address" placeholder="Street, City"></textarea>
@@ -275,25 +275,29 @@
         </div>
 
         <label for="country">Country:</label>
-        <select id="country" name="country">
+        <select class="form-control" id="country" name="country">
           <option value="">Select Country</option>
-          <option>United States</option>
-          <option>United Kingdom</option>
-          <option>India</option>
-          <option>Canada</option>
-          <option>Australia</option>
+          <option value="usa">United States</option>
+          <option value="canada">Canada</option>
+          <option value="uk">United Kingdom</option>
+          <option value="germany">Germany</option>
+          <option value="france">France</option>
+          <option value="australia">Australia</option>
+          <option value="japan">Japan</option>
+          <option value="china">China</option>
+          <option value="brazil">Brazil</option>
+          <option value="india">India</option>
         </select>
 
         <label for="colors">Colors:</label>
-        <select id="colors" name="colors" multiple size="5" aria-label="Colors">
-          <option>Red</option>
-          <option>Green</option>
-          <option>Blue</option>
-          <option>Yellow</option>
-          <option>Purple</option>
-          <option>Orange</option>
-          <option>Black</option>
-          <option>White</option>
+        <select class="form-control" id="colors" multiple>
+          <option value="red">Red</option>
+          <option value="blue">Blue</option>
+          <option value="green">Green</option>
+          <option value="yellow">Yellow</option>
+          <option value="red">Red</option>
+          <option value="white">White</option>
+          <option value="green">Green</option>
         </select>
 
         <label for="sorted-left">Sorted List:</label>
